@@ -1,7 +1,11 @@
 package cn.itsource.hrm.service;
 
+import cn.itsource.basic.util.PageList;
 import cn.itsource.hrm.domain.CourseType;
+import cn.itsource.hrm.query.CourseTypeQuery;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICourseTypeService extends IService<CourseType> {
 
+    List<CourseType> getTreeDate();
 }

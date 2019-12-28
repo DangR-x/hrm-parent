@@ -14,6 +14,10 @@ import routes from './routes'
 Mock.bootstrap();*/
 import 'font-awesome/css/font-awesome.min.css'
 
+import axios from 'axios'
+axios.defaults.baseURL = "http://localhost:9527/services";
+Vue.prototype.$http=axios
+
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)

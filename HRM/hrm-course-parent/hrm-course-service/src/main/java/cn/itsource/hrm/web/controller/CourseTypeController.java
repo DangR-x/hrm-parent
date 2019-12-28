@@ -83,4 +83,11 @@ public class CourseTypeController {
         Page<CourseType> page = courseTypeService.page(new Page<CourseType>(query.getPage(), query.getRows()));
         return new PageList<>(page.getTotal(),page.getRecords());
     }
+
+    /*@RequestMapping(value = "/treeData",method = RequestMethod.GET)*/
+    @GetMapping("/treeData")
+    public List<CourseType> TreeData(){
+        List<CourseType> treeDate = courseTypeService.getTreeDate();
+        return treeDate;
+    }
 }

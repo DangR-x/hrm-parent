@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ProjectInvestorMapper">
+    <resultMap id="BaseResultMap" type="com.highnes.attractinvestment.entity.ProjectInvestor">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+        <result column="investorname" jdbcType="VARCHAR" property="investorname" />
+        <result column="documenttype" jdbcType="INTEGER" property="documenttype" />
+        <result column="documentnumber" jdbcType="VARCHAR" property="documentnumber" />
+        <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+        <result column="investoraddress" jdbcType="VARCHAR" property="investoraddress" />
+    </resultMap>
+
+    <select id="selectByProjectId" resultMap="BaseResultMap">
+        select * from project_investor where project_id=#{projectId}
+    </select>
+
+    <insert id="insert" parameterType="com.highnes.attractinvestment.entity.ProjectInvestor" keyProperty="id" useGeneratedKeys="true" >
+        insert into project_investor (
+           project_id,
+           investorname,
+           documenttype,
+           documentnumber,
+           telephone,
+           investoraddress
+            ) value (
+            #{projectId},
+            #{investorname},
+            #{documenttype},
+            #{documentnumber},
+            #{telephone},
+            #{investoraddress}
+            )
+    </insert>
+    <delete id="deleteById" parameterType="long" >
+        delete from project_investor where id=#{id}
+    </delete>
+
+    <update id="updateById" parameterType="com.highnes.attractinvestment.entity.ProjectInvestor">
+        update project_investor m set
+        m.project_id=#{projectId},
+        m.investorname=#{investorname},
+        m.documenttype=#{documenttype},
+        m.documentnumber=#{documentnumber},
+        m.telephone=#{telephone},
+        m.investoraddress=#{investoraddress}
+        where id=#{id}
+    </update>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select * from project_investor where id=#{id}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from project_investor
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${packageName}.mapper.${ClassName}Mapper">
+    #set($classSqlName=$ClassName.substring(0,1).toLowerCase() + ${ClassName.substring(1)})
+
+    <sql id="${classSqlName}Columns">
+    #foreach ($column in $columns)
+a.${column.columnName} AS "${column.javaField}"#if($foreach.hasNext),
+    #end
+    #end
+    #if($table.tree)
+        #foreach ($column in $columns)
+,b.${column.columnName} AS "parent.${column.javaField}"
+        #end
+    #end
+</sql>
+
+    <sql id="${classSqlName}LeftJoin">
+#if($table.tree)
+left join ${tableName} b on a.parent_id = b.id
+#end
+    </sql>
+
+    <select id="get" resultType="${ClassName}">
+        SELECT
+        <include refid="${classSqlName}Columns"/>
+        FROM
+        ${tableName} a
+        <include refid="${classSqlName}LeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="${ClassName}">
+        SELECT
+        <include refid="${classSqlName}Columns"/>
+        FROM
+        ${tableName} a
+        <include refid="${classSqlName}LeftJoin"/>
+        <where>
+    #if($table.isDelField())
+        a.del_flag = #{DEL_FLAG_NORMAL}
+        #else
+        1=1
+    #end
+#foreach($column in $columns)
+    #set($queryType=$column.queryType)
+    #set($javaField=$column.javaField)
+    #set($javaType=$column.javaType)
+    #set($columnName=$column.columnName)
+    #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+    #if($column.query)
+        #if($column.queryType == "EQ")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and a.$columnName = #{$javaField}</if>
+        #elseif($queryType == "NE")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and a.$columnName != #{$javaField}</if>
+        #elseif($queryType == "GT")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and a.$columnName &gt; #{$javaField}</if>
+        #elseif($queryType == "GTE")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and a.$columnName &gt;= #{$javaField}</if>
+        #elseif($queryType == "LT")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and a.$columnName &lt; #{$javaField}</if>
+        #elseif($queryType == "LTE")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and a.$columnName &lt;= #{$javaField}</if>
+        #elseif($queryType == "LIKE")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and a.$columnName like concat('%', #{$javaField}, '%')</if>
+        #elseif($queryType == "BETWEEN")
+            <if test="params.begin$AttrName != null and params.begin$AttrName != '' and params.end$AttrName != null and params.end$AttrName != ''"> and a.$columnName between #{params.begin$AttrName} and #{params.end$AttrName}</if>
+        #end
+    #end
+#end
+        </where>
+#if($table.tree)
+    order by a.${tree_parent_code}
+#end
+    </select>
+
+
+    <insert id="insert" parameterType="${ClassName}"#if($pkColumn.increment) useGeneratedKeys="true" keyProperty="$pkColumn.javaField"#end>
+        insert into ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+#foreach($column in $columns)
+#if($column.columnName != $pkColumn.columnName || !$pkColumn.increment)
+            <if test="$column.javaField != null #if($column.javaType == 'String' ) and $column.javaField != ''#end">$column.columnName,</if>
+#end
+#end
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+#foreach($column in $columns)
+#if($column.columnName != $pkColumn.columnName || !$pkColumn.increment)
+            <if test="$column.javaField != null #if($column.javaType == 'String' ) and $column.javaField != ''#end">#{$column.javaField},</if>
+#end
+#end
+         </trim>
+    </insert>
+
+    <update id="update" parameterType="${ClassName}">
+        update ${tableName}
+        <trim prefix="SET" suffixOverrides=",">
+#foreach($column in $columns)
+#if($column.columnName != $pkColumn.columnName)
+            <if test="$column.javaField != null #if($column.javaType == 'String' ) and $column.javaField != ''#end">$column.columnName = #{$column.javaField},</if>
+#end
+#end
+        </trim>
+        where ${pkColumn.columnName} = #{${pkColumn.javaField}}
+    </update>
+
+    <delete id="delete" parameterType="${pkColumn.javaType}">
+#if($table.isDelField())
+        update ${tableName} set del_flag = #{DEL_FLAG_DELETE} where ${pkColumn.columnName} = #{${pkColumn.javaField}}
+        #else
+        delete from ${tableName} where ${pkColumn.columnName} = #{${pkColumn.javaField}}
+    #end
+    </delete>
+
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ProjectPersonnelResumeMapper">
+
+    <sql id="projectPersonnelResumeColumns">
+    a.id AS "id",
+        a.personnel_id AS "personnelId",
+        a.file_name AS "fileName",
+        a.file_path AS "filePath",
+        a.del_flag AS "delFlag"        </sql>
+
+    <sql id="projectPersonnelResumeLeftJoin">
+    </sql>
+
+    <select id="get" resultType="ProjectPersonnelResume">
+        SELECT
+        <include refid="projectPersonnelResumeColumns"/>
+        FROM
+        project_personnel_resume a
+        <include refid="projectPersonnelResumeLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ProjectPersonnelResume">
+        SELECT
+        <include refid="projectPersonnelResumeColumns"/>
+        FROM
+        project_personnel_resume a
+        <include refid="projectPersonnelResumeLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="personnelId != null  and personnelId != ''">and a.personnel_id = #{personnelId}</if>
+            <if test="fileName != null  and fileName != ''">and a.file_name like concat('%', #{fileName}, '%')</if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="ProjectPersonnelResume">
+        insert into project_personnel_resume
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="personnelId != null  and personnelId != ''">personnel_id,</if>
+            <if test="fileName != null  and fileName != ''">file_name,</if>
+            <if test="filePath != null  and filePath != ''">file_path,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="personnelId != null  and personnelId != ''">#{personnelId},</if>
+            <if test="fileName != null  and fileName != ''">#{fileName},</if>
+            <if test="filePath != null  and filePath != ''">#{filePath},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ProjectPersonnelResume">
+        update project_personnel_resume
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="personnelId != null  and personnelId != ''">personnel_id = #{personnelId},</if>
+            <if test="fileName != null  and fileName != ''">file_name = #{fileName},</if>
+            <if test="filePath != null  and filePath != ''">file_path = #{filePath},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update project_personnel_resume set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+    </delete>
+
+    <delete id="deleteByPersonnel" parameterType="String">
+        update project_personnel_resume set del_flag = #{DEL_FLAG_DELETE} where personnel_id = #{personnelId}
+    </delete>
+
+</mapper>

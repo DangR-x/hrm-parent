@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.StartProductMapper">
+    
+    <sql id="startProductColumns">
+    a.id AS "id",
+        a.actual_date AS "actualDate",
+        a.estimated_date AS "estimatedDate",
+        a.actualproduct_date AS "actualproductDate",
+        a.estimatedproduct_date AS "estimatedproductDate",
+        a.actual_value AS "actualValue",
+        a.estimated_value AS "estimatedValue",
+        a.actual_payable AS "actualPayable",
+        a.estimated_payable AS "estimatedPayable",
+        a.product_id AS "productId",
+        a.create_date AS "createDate",
+        a.create_by AS "createBy",
+        a.update_date AS "updateDate",
+        a.update_by AS "updateBy",
+        a.del_flag AS "delFlag"        </sql>
+
+    <sql id="startProductLeftJoin">
+    </sql>
+
+    <select id="get" resultType="StartProduct">
+        SELECT
+        <include refid="startProductColumns"/>
+        FROM
+        start_product a
+        <include refid="startProductLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="StartProduct">
+        SELECT
+        <include refid="startProductColumns"/>
+        FROM
+        start_product a
+        <include refid="startProductLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+        <if test="productId != null  and productId != ''"> and a.product_id = #{productId}</if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="StartProduct">
+        insert into start_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="actualDate != null ">actual_date,</if>
+            <if test="estimatedDate != null ">estimated_date,</if>
+            <if test="actualproductDate != null ">actualproduct_date,</if>
+            <if test="estimatedproductDate != null ">estimatedproduct_date,</if>
+            <if test="actualValue != null  and actualValue != ''">actual_value,</if>
+            <if test="estimatedValue != null  and estimatedValue != ''">estimated_value,</if>
+            <if test="actualPayable != null  and actualPayable != ''">actual_payable,</if>
+            <if test="estimatedPayable != null  and estimatedPayable != ''">estimated_payable,</if>
+            <if test="productId != null  and productId != ''">product_id,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateDate != null ">update_date,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="actualDate != null ">#{actualDate},</if>
+            <if test="estimatedDate != null ">#{estimatedDate},</if>
+            <if test="actualproductDate != null ">#{actualproductDate},</if>
+            <if test="estimatedproductDate != null ">#{estimatedproductDate},</if>
+            <if test="actualValue != null  and actualValue != ''">#{actualValue},</if>
+            <if test="estimatedValue != null  and estimatedValue != ''">#{estimatedValue},</if>
+            <if test="actualPayable != null  and actualPayable != ''">#{actualPayable},</if>
+            <if test="estimatedPayable != null  and estimatedPayable != ''">#{estimatedPayable},</if>
+            <if test="productId != null  and productId != ''">#{productId},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateDate != null ">#{updateDate},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="update" parameterType="StartProduct">
+        update start_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="actualDate != null ">actual_date = #{actualDate},</if>
+            <if test="estimatedDate != null ">estimated_date = #{estimatedDate},</if>
+            <if test="actualproductDate != null ">actualproduct_date = #{actualproductDate},</if>
+            <if test="estimatedproductDate != null ">estimatedproduct_date = #{estimatedproductDate},</if>
+            <if test="actualValue != null  and actualValue != ''">actual_value = #{actualValue},</if>
+            <if test="estimatedValue != null  and estimatedValue != ''">estimated_value = #{estimatedValue},</if>
+            <if test="actualPayable != null  and actualPayable != ''">actual_payable = #{actualPayable},</if>
+            <if test="estimatedPayable != null  and estimatedPayable != ''">estimated_payable = #{estimatedPayable},</if>
+            <if test="productId != null  and productId != ''">product_id = #{productId},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateDate != null ">update_date = #{updateDate},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update start_product set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+    </delete>
+
+    <delete id="deleteByProject" parameterType="String">
+        update start_product set del_flag = #{DEL_FLAG_DELETE} where product_id = #{productId}
+    </delete>
+
+</mapper>

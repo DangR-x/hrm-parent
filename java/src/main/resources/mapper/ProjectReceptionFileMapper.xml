@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ProjectReceptionFileMapper">
+
+    <sql id="projectReceptionFileColumns">
+    a.id AS "id",
+        a.reception_id AS "receptionId",
+        a.file_name AS "fileName",
+        a.file_path AS "filePath",
+        a.del_flag AS "delFlag"        </sql>
+
+    <sql id="projectReceptionFileLeftJoin">
+    </sql>
+
+    <select id="get" resultType="ProjectReceptionFile">
+        SELECT
+        <include refid="projectReceptionFileColumns"/>
+        FROM
+        project_reception_file a
+        <include refid="projectReceptionFileLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ProjectReceptionFile">
+        SELECT
+        <include refid="projectReceptionFileColumns"/>
+        FROM
+        project_reception_file a
+        <include refid="projectReceptionFileLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="receptionId != null  and receptionId != ''">and a.reception_id = #{receptionId}</if>
+            <if test="fileName != null  and fileName != ''">and a.file_name like concat('%', #{fileName}, '%')</if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="ProjectReceptionFile">
+        insert into project_reception_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="receptionId != null  and receptionId != ''">reception_id,</if>
+            <if test="fileName != null  and fileName != ''">file_name,</if>
+            <if test="filePath != null  and filePath != ''">file_path,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="receptionId != null  and receptionId != ''">#{receptionId},</if>
+            <if test="fileName != null  and fileName != ''">#{fileName},</if>
+            <if test="filePath != null  and filePath != ''">#{filePath},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ProjectReceptionFile">
+        update project_reception_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="receptionId != null  and receptionId != ''">reception_id = #{receptionId},</if>
+            <if test="fileName != null  and fileName != ''">file_name = #{fileName},</if>
+            <if test="filePath != null  and filePath != ''">file_path = #{filePath},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update project_reception_file set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+    </delete>
+
+    <delete id="deleteByReception" parameterType="String">
+        update project_reception_file set del_flag = #{DEL_FLAG_DELETE} where reception_id = #{receptionId}
+    </delete>
+
+
+</mapper>

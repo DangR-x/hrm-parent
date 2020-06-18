@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ProjectReceptionVisitMapper">
+
+    <sql id="projectReceptionVisitColumns">
+    a.id AS "id",
+        a.reception_id AS "receptionId",
+        a.name AS "name",
+        a.title AS "title",
+        a.del_flag AS "delFlag"        </sql>
+
+    <sql id="projectReceptionVisitLeftJoin">
+    </sql>
+
+    <select id="get" resultType="ProjectReceptionVisit">
+        SELECT
+        <include refid="projectReceptionVisitColumns"/>
+        FROM
+        project_reception_visit a
+        <include refid="projectReceptionVisitLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ProjectReceptionVisit">
+        SELECT
+        <include refid="projectReceptionVisitColumns"/>
+        FROM
+        project_reception_visit a
+        <include refid="projectReceptionVisitLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="receptionId != null  and receptionId != ''">and a.reception_id = #{receptionId}</if>
+            <if test="name != null  and name != ''">and a.name like concat('%', #{name}, '%')</if>
+            <if test="title != null  and title != ''">and a.title like concat('%', #{title}, '%')</if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="ProjectReceptionVisit">
+        insert into project_reception_visit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="receptionId != null  and receptionId != ''">reception_id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="title != null  and title != ''">title,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="receptionId != null  and receptionId != ''">#{receptionId},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="title != null  and title != ''">#{title},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ProjectReceptionVisit">
+        update project_reception_visit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="receptionId != null  and receptionId != ''">reception_id = #{receptionId},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="title != null  and title != ''">title = #{title},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update project_reception_visit set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+    </delete>
+
+    <delete id="deleteByReception" parameterType="String">
+        update project_reception_visit set del_flag = #{DEL_FLAG_DELETE} where reception_id = #{receptionId}
+    </delete>
+
+</mapper>

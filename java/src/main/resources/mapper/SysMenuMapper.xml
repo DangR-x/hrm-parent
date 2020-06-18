@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.SysMenuMapper">
+    
+    <sql id="sysMenuColumns">
+    a.menu_id AS "menuId",
+        a.menu_name AS "menuName",
+        a.parent_id AS "parentId",
+        a.order_num AS "orderNum",
+        a.url AS "url",
+        a.target AS "target",
+        a.menu_type AS "menuType",
+        a.visible AS "visible",
+        a.perms AS "perms",
+        a.icon AS "icon",
+        a.create_by AS "createBy",
+        a.create_date AS "createDate",
+        a.update_by AS "updateBy",
+        a.update_date AS "updateDate",
+        a.remark AS "remark"
+    </sql>
+
+    <sql id="sysMenuLeftJoin">
+    </sql>
+
+    <select id="get" resultType="SysMenu">
+        SELECT
+        <include refid="sysMenuColumns"/>
+        FROM
+        sys_menu a
+        <include refid="sysMenuLeftJoin"/>
+        WHERE a.menu_id = #{id}
+    </select>
+
+    <select id="findList" resultType="SysMenu">
+        SELECT
+        <include refid="sysMenuColumns"/>
+        FROM
+        sys_menu a
+        <include refid="sysMenuLeftJoin"/>
+        <where>
+            1=1
+        <if test="menuName != null  and menuName != ''"> and a.menu_name like concat('%', #{menuName}, '%')</if>
+            <if test="parentId != null "> and a.parent_id = #{parentId}</if>
+                        <if test="menuType != null  and menuType != ''"> and a.menu_type = #{menuType}</if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="SysMenu" useGeneratedKeys="true" keyProperty="menuId">
+        insert into sys_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="menuName != null  and menuName != ''">menu_name,</if>
+            <if test="parentId != null ">parent_id,</if>
+            <if test="orderNum != null ">order_num,</if>
+            <if test="url != null  and url != ''">url,</if>
+            <if test="target != null  and target != ''">target,</if>
+            <if test="menuType != null  and menuType != ''">menu_type,</if>
+            <if test="visible != null  and visible != ''">visible,</if>
+            <if test="perms != null  and perms != ''">perms,</if>
+            <if test="icon != null  and icon != ''">icon,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateDate != null ">update_date,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="menuName != null  and menuName != ''">#{menuName},</if>
+            <if test="parentId != null ">#{parentId},</if>
+            <if test="orderNum != null ">#{orderNum},</if>
+            <if test="url != null  and url != ''">#{url},</if>
+            <if test="target != null  and target != ''">#{target},</if>
+            <if test="menuType != null  and menuType != ''">#{menuType},</if>
+            <if test="visible != null  and visible != ''">#{visible},</if>
+            <if test="perms != null  and perms != ''">#{perms},</if>
+            <if test="icon != null  and icon != ''">#{icon},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateDate != null ">#{updateDate},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="update" parameterType="SysMenu">
+        update sys_menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="menuName != null  and menuName != ''">menu_name = #{menuName},</if>
+            <if test="parentId != null ">parent_id = #{parentId},</if>
+            <if test="orderNum != null ">order_num = #{orderNum},</if>
+            <if test="url != null  and url != ''">url = #{url},</if>
+            <if test="target != null  and target != ''">target = #{target},</if>
+            <if test="menuType != null  and menuType != ''">menu_type = #{menuType},</if>
+            <if test="visible != null  and visible != ''">visible = #{visible},</if>
+            <if test="perms != null  and perms != ''">perms = #{perms},</if>
+            <if test="icon != null  and icon != ''">icon = #{icon},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateDate != null ">update_date = #{updateDate},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+        </trim>
+        where menu_id = #{menuId}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        delete from sys_menu where menu_id = #{menuId}
+        </delete>
+
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ActivityProcessDetailsMapper">
+
+    <sql id="activityProcessDetailsColumns">
+    a.id AS "id",
+        a.process_id AS "processId",
+        a.user_id AS "userId",
+        a.user_name AS "userName",
+        a.sort AS "sort",
+        a.del_flag AS "delFlag"        </sql>
+
+    <sql id="activityProcessDetailsLeftJoin">
+    </sql>
+
+    <select id="get" resultType="ActivityProcessDetails">
+        SELECT
+        <include refid="activityProcessDetailsColumns"/>
+        FROM
+        activity_process_details a
+        <include refid="activityProcessDetailsLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ActivityProcessDetails">
+        SELECT
+        <include refid="activityProcessDetailsColumns"/>
+        FROM
+        activity_process_details a
+        <include refid="activityProcessDetailsLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="processId != null  and processId != ''">and a.process_id = #{processId}</if>
+            <if test="userId != null  and userId != ''">and a.user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''">and a.user_name like concat('%', #{userName}, '%')</if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="ActivityProcessDetails">
+        insert into activity_process_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="processId != null  and processId != ''">process_id,</if>
+            <if test="userId != null  and userId != ''">user_id,</if>
+            <if test="userName != null  and userName != ''">user_name,</if>
+            <if test="sort != null ">sort,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="processId != null  and processId != ''">#{processId},</if>
+            <if test="userId != null  and userId != ''">#{userId},</if>
+            <if test="userName != null  and userName != ''">#{userName},</if>
+            <if test="sort != null ">#{sort},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ActivityProcessDetails">
+        update activity_process_details
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="processId != null  and processId != ''">process_id = #{processId},</if>
+            <if test="userId != null  and userId != ''">user_id = #{userId},</if>
+            <if test="userName != null  and userName != ''">user_name = #{userName},</if>
+            <if test="sort != null ">sort = #{sort},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update activity_process_details set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+    </delete>
+
+    <delete id="deleteByProcess" parameterType="String">
+        delete from activity_process_details where process_id = #{processId}
+    </delete>
+
+</mapper>

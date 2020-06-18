@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ProjectProspectusDetailsMapper">
+    
+    <sql id="projectProspectusDetailsColumns">
+    a.id AS "id",
+        a.project_id AS "projectId",
+        a.file_name AS "fileName",
+        a.file_path AS "filePath",
+        a.del_flag AS "delFlag"        </sql>
+
+    <sql id="projectProspectusDetailsLeftJoin">
+    </sql>
+
+    <select id="get" resultType="ProjectProspectusDetails">
+        SELECT
+        <include refid="projectProspectusDetailsColumns"/>
+        FROM
+        project_prospectus_details a
+        <include refid="projectProspectusDetailsLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ProjectProspectusDetails">
+        SELECT
+        <include refid="projectProspectusDetailsColumns"/>
+        FROM
+        project_prospectus_details a
+        <include refid="projectProspectusDetailsLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+                                    <if test="projectId != null  and projectId != ''"> and a.project_id = #{projectId}</if>
+                                    <if test="fileName != null  and fileName != ''"> and a.file_name like concat('%', #{fileName}, '%')</if>
+                            </where>
+    </select>
+
+
+    <insert id="insert" parameterType="ProjectProspectusDetails">
+        insert into project_prospectus_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="projectId != null  and projectId != ''">project_id,</if>
+            <if test="fileName != null  and fileName != ''">file_name,</if>
+            <if test="filePath != null  and filePath != ''">file_path,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="projectId != null  and projectId != ''">#{projectId},</if>
+            <if test="fileName != null  and fileName != ''">#{fileName},</if>
+            <if test="filePath != null  and filePath != ''">#{filePath},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="update" parameterType="ProjectProspectusDetails">
+        update project_prospectus_details
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null  and projectId != ''">project_id = #{projectId},</if>
+            <if test="fileName != null  and fileName != ''">file_name = #{fileName},</if>
+            <if test="filePath != null  and filePath != ''">file_path = #{filePath},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update project_prospectus_details set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+            </delete>
+
+    <delete id="deleteByProject" parameterType="String">
+        delete from project_prospectus_details where project_id = #{projectId}
+    </delete>
+
+</mapper>

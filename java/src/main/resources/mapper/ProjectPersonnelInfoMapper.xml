@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ProjectPersonnelInfoMapper">
+
+    <sql id="projectPersonnelInfoColumns">
+    a.id AS "id",
+        a.project_id AS "projectId",
+        a.name AS "name",
+        a.post AS "post",
+        a.title AS "title",
+        a.high_honor AS "highHonor",
+        a.remarks AS "remarks",
+        a.del_flag AS "delFlag"        </sql>
+
+    <sql id="projectPersonnelInfoLeftJoin">
+    </sql>
+
+    <select id="get" resultType="ProjectPersonnelInfo">
+        SELECT
+        <include refid="projectPersonnelInfoColumns"/>
+        FROM
+        project_personnel_info a
+        <include refid="projectPersonnelInfoLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ProjectPersonnelInfo">
+        SELECT
+        <include refid="projectPersonnelInfoColumns"/>
+        FROM
+        project_personnel_info a
+        <include refid="projectPersonnelInfoLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="projectId != null  and projectId != ''">and a.project_id = #{projectId}</if>
+            <if test="name != null  and name != ''">and a.name like concat('%', #{name}, '%')</if>
+            <if test="title != null  and title != ''">and a.title like concat('%', #{title}, '%')</if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="ProjectPersonnelInfo">
+        insert into project_personnel_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="projectId != null  and projectId != ''">project_id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="post != null  and post != ''">post,</if>
+            <if test="title != null  and title != ''">title,</if>
+            <if test="highHonor != null  and highHonor != ''">high_honor,</if>
+            <if test="remarks != null  and remarks != ''">remarks,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="projectId != null  and projectId != ''">#{projectId},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="post != null  and post != ''">#{post},</if>
+            <if test="title != null  and title != ''">#{title},</if>
+            <if test="highHonor != null  and highHonor != ''">#{highHonor},</if>
+            <if test="remarks != null  and remarks != ''">#{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ProjectPersonnelInfo">
+        update project_personnel_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null  and projectId != ''">project_id = #{projectId},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="post != null  and post != ''">post = #{post},</if>
+            <if test="title != null  and title != ''">title = #{title},</if>
+            <if test="highHonor != null  and highHonor != ''">high_honor = #{highHonor},</if>
+            <if test="remarks != null  and remarks != ''">remarks = #{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update project_personnel_info set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+    </delete>
+
+    <delete id="deleteByProject" parameterType="String">
+        update project_personnel_info set del_flag = #{DEL_FLAG_DELETE} where project_id = #{projectId}
+    </delete>
+
+</mapper>

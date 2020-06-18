@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.SysUserPostMapper">
+    
+    <sql id="sysUserPostColumns">
+    a.user_id AS "userId",
+        a.post_id AS "postId"        </sql>
+
+    <sql id="sysUserPostLeftJoin">
+    </sql>
+
+    <select id="get" resultType="SysUserPost">
+        SELECT
+        <include refid="sysUserPostColumns"/>
+        FROM
+        sys_user_post a
+        <include refid="sysUserPostLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="SysUserPost">
+        SELECT
+        <include refid="sysUserPostColumns"/>
+        FROM
+        sys_user_post a
+        <include refid="sysUserPostLeftJoin"/>
+        <where>
+            1=1
+                    </where>
+    </select>
+
+
+    <insert id="insert" parameterType="SysUserPost">
+        insert into sys_user_post
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null ">user_id,</if>
+            <if test="postId != null ">post_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null ">#{userId},</if>
+            <if test="postId != null ">#{postId},</if>
+         </trim>
+    </insert>
+
+    <update id="update" parameterType="SysUserPost">
+        update sys_user_post
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="postId != null ">post_id = #{postId},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        delete from sys_user_post where user_id = #{userId}
+        </delete>
+
+</mapper>

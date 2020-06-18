@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ProjectContractMapper">
+
+    <sql id="projectContractColumns">
+    a.id AS "id",
+        a.status AS "status",
+        a.meeting_code AS "meetingCode",
+        a.meeting_code_two AS "meetingCodeTwo",
+        a.contract_items AS "contractItems",
+        a.del_flag AS "delFlag",
+        a.project_id as "projectId",
+        a.sign_flag as "signFlag",
+        a.leg_flag as "legFlag",
+        a.meeting_flag as "meetingFlag",
+        a.meeting_two_flag as "meetingTwoFlag"
+    </sql>
+
+    <sql id="projectContractLeftJoin">
+    </sql>
+
+    <select id="get" resultType="ProjectContract">
+        SELECT
+        <include refid="projectContractColumns"/>
+        FROM
+        project_contract a
+        <include refid="projectContractLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ProjectContract">
+        SELECT
+        <include refid="projectContractColumns"/>
+        FROM
+        project_contract a
+        <include refid="projectContractLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="projectId != null and projectId != ''">
+                and a.project_id = #{projectId}
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="ProjectContract">
+        insert into project_contract
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="meetingCode != null  and meetingCode != ''">meeting_code,</if>
+            <if test="meetingCodeTwo != null  and meetingCodeTwo != ''">meeting_code_two,</if>
+            <if test="contractItems != null  and contractItems != ''">contract_items,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+            <if test="signFlag != null  and signFlag != ''">sign_flag,</if>
+            <if test="legFlag != null  and legFlag != ''">leg_flag,</if>
+            <if test="meetingFlag != null  and meetingFlag != ''">meeting_flag,</if>
+            <if test="meetingTwoFlag != null  and meetingTwoFlag != ''">meeting_two_flag,</if>
+            <if test="projectId != null  and projectId != ''">project_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="meetingCode != null  and meetingCode != ''">#{meetingCode},</if>
+            <if test="meetingCodeTwo != null  and meetingCodeTwo != ''">#{meetingCodeTwo},</if>
+            <if test="contractItems != null  and contractItems != ''">#{contractItems},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+            <if test="signFlag != null  and signFlag != ''">#{signFlag},</if>
+            <if test="legFlag != null  and legFlag != ''">#{legFlag},</if>
+            <if test="meetingFlag != null  and meetingFlag != ''">#{meetingFlag},</if>
+            <if test="meetingTwoFlag != null  and meetingTwoFlag != ''">#{meetingTwoFlag},</if>
+            <if test="projectId != null  and projectId != ''">#{projectId},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ProjectContract">
+        update project_contract
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="status != null  and status != ''">status = #{status},</if>
+            <if test="meetingCode != null  and meetingCode != ''">meeting_code = #{meetingCode},</if>
+            <if test="meetingCodeTwo != null  and meetingCodeTwo != ''">meeting_code_two = #{meetingCodeTwo},</if>
+            <if test="contractItems != null  and contractItems != ''">contract_items = #{contractItems},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="projectId != null  and projectId != ''">project_id = #{projectId},</if>
+            <if test="signFlag != null  and signFlag != ''">sign_flag = #{signFlag},</if>
+            <if test="legFlag != null  and legFlag != ''">leg_flag = #{legFlag},</if>
+            <if test="meetingFlag != null  and meetingFlag != ''">meeting_flag = #{meetingFlag},</if>
+            <if test="meetingTwoFlag != null  and meetingTwoFlag != ''">meeting_two_flag = #{meetingTwoFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update project_contract set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+    </delete>
+
+    <delete id="deleteByProject" parameterType="String">
+        update project_contract set del_flag = #{DEL_FLAG_DELETE} where project_id = #{projectId}
+    </delete>
+
+</mapper>

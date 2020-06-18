@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ProjectExchangeMapper">
+
+    <sql id="projectExchangeColumns">
+    a.id AS "id",
+        a.project_id AS "projectId",
+        a.contract_code AS "contractCode",
+        a.contract_items AS "contractItems",
+        a.pre_exchange_flag AS "preExchangeFlag",
+        a.exchanged_flag AS "exchangedFlag",
+        a.exchange_items AS "exchangeItems",
+        a.exchange_date AS "exchangeDate",
+        a.exchange_user_id AS "exchangeUserId",
+        a.exchange_user_name AS "exchangeUserName",
+        a.create_date AS "createDate",
+        a.create_by AS "createBy",
+        a.del_flag AS "delFlag"        </sql>
+
+    <sql id="projectExchangeLeftJoin">
+    </sql>
+
+    <select id="get" resultType="ProjectExchange">
+        SELECT
+        <include refid="projectExchangeColumns"/>
+        FROM
+        project_exchange a
+        <include refid="projectExchangeLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ProjectExchange">
+        SELECT
+        <include refid="projectExchangeColumns"/>
+        FROM
+        project_exchange a
+        <include refid="projectExchangeLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="projectId != null  and projectId != ''">and a.project_id = #{projectId}</if>
+            <if test="exchangeUserId != null  and exchangeUserId != ''">and a.exchange_user_id = #{exchangeUserId}</if>
+            <if test="exchangeUserName != null  and exchangeUserName != ''">and a.exchange_user_name like concat('%',
+                #{exchangeUserName}, '%')
+            </if>
+        </where>
+        order by a.create_date asc
+    </select>
+
+
+    <insert id="insert" parameterType="ProjectExchange">
+        insert into project_exchange
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="projectId != null  and projectId != ''">project_id,</if>
+            <if test="contractCode != null  and contractCode != ''">contract_code,</if>
+            <if test="contractItems != null  and contractItems != ''">contract_items,</if>
+            <if test="preExchangeFlag != null  and preExchangeFlag != ''">pre_exchange_flag,</if>
+            <if test="exchangedFlag != null  and exchangedFlag != ''">exchanged_flag,</if>
+            <if test="exchangeItems != null  and exchangeItems != ''">exchange_items,</if>
+            <if test="exchangeDate != null ">exchange_date,</if>
+            <if test="exchangeUserId != null  and exchangeUserId != ''">exchange_user_id,</if>
+            <if test="exchangeUserName != null  and exchangeUserName != ''">exchange_user_name,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="projectId != null  and projectId != ''">#{projectId},</if>
+            <if test="contractCode != null  and contractCode != ''">#{contractCode},</if>
+            <if test="contractItems != null  and contractItems != ''">#{contractItems},</if>
+            <if test="preExchangeFlag != null  and preExchangeFlag != ''">#{preExchangeFlag},</if>
+            <if test="exchangedFlag != null  and exchangedFlag != ''">#{exchangedFlag},</if>
+            <if test="exchangeItems != null  and exchangeItems != ''">#{exchangeItems},</if>
+            <if test="exchangeDate != null ">#{exchangeDate},</if>
+            <if test="exchangeUserId != null  and exchangeUserId != ''">#{exchangeUserId},</if>
+            <if test="exchangeUserName != null  and exchangeUserName != ''">#{exchangeUserName},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ProjectExchange">
+        update project_exchange
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null  and projectId != ''">project_id = #{projectId},</if>
+            <if test="contractCode != null  and contractCode != ''">contract_code = #{contractCode},</if>
+            <if test="contractItems != null  and contractItems != ''">contract_items = #{contractItems},</if>
+            <if test="preExchangeFlag != null  and preExchangeFlag != ''">pre_exchange_flag = #{preExchangeFlag},</if>
+            <if test="exchangedFlag != null  and exchangedFlag != ''">exchanged_flag = #{exchangedFlag},</if>
+            <if test="exchangeItems != null  and exchangeItems != ''">exchange_items = #{exchangeItems},</if>
+            <if test="exchangeDate != null ">exchange_date = #{exchangeDate},</if>
+            <if test="exchangeUserId != null  and exchangeUserId != ''">exchange_user_id = #{exchangeUserId},</if>
+            <if test="exchangeUserName != null  and exchangeUserName != ''">exchange_user_name = #{exchangeUserName},
+            </if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update project_exchange set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+    </delete>
+
+    <delete id="deleteByProject" parameterType="String">
+        update project_exchange set del_flag = #{DEL_FLAG_DELETE} where project_id = #{projectId}
+    </delete>
+
+</mapper>

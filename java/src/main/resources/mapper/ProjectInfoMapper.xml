@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ProjectInfoMapper">
+
+    <sql id="projectInfoColumns">
+        a.id AS "id",
+            a.title AS "title",
+            a.classify_type AS "classifyType",
+            a.classify_type_two AS "classifyTypeTwo",
+            a.source_type AS "sourceType",
+            a.source_type_two AS "sourceTypeTwo",
+            a.item_type AS "itemType",
+            a.description AS "description",
+            a.total_cast AS "totalCast",
+            a.output_value AS "outputValue",
+            a.estimated_tax AS "estimatedTax",
+            a.total_people AS "totalPeople",
+            a.deal_time AS "dealTime",
+            a.open_time AS "openTime",
+            a.production_time AS "productionTime",
+            a.create_by AS "createBy",
+            a.create_date AS "createDate",
+            a.update_by AS "updateBy",
+            a.update_date AS "updateDate",
+            a.group_id AS "groupId",
+            a.office_id AS "officeId",
+            a.remarks AS "remarks",
+            a.del_flag AS "delFlag",
+            a.code as "code",
+            a.status as "status",
+            a.urge_flag as "urgeFlag",
+            a.urge_type as "urgeType",
+            a.urge_leader as "urgeLeader",
+            a.step_status as "stepStatus",
+            a.step_remark as "stepRemark",
+            a.transfer_flag as "transferFlag",
+            a.create_name as "createName",
+            a.industry as "industry"
+        </sql>
+
+    <sql id="projectInfoLeftJoin">
+        <if test="paras != null and (paras.companyName != null or paras.companyCode != null or paras.companyUser != null or paras.companyAddress != null or paras.companyClassify != null)">
+            left join project_company_info b on a.id = b.project_id
+        </if>
+    </sql>
+
+    <select id="get" resultType="ProjectInfo">
+        SELECT
+        <include refid="projectInfoColumns"/>
+        FROM
+        project_info a
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ProjectInfo">
+        SELECT
+        <include refid="projectInfoColumns"/>
+        FROM
+        project_info a
+        <include refid="projectInfoLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="title != null  and title != ''">and a.title like concat('%', #{title}, '%')</if>
+            <if test="code != null  and code != ''">and a.code = #{code}</if>
+            <if test="classifyType != null  and classifyType != ''">and a.classify_type = #{classifyType}</if>
+            <if test="sourceType != null  and sourceType != ''">and a.source_type = #{sourceType}</if>
+            <if test="itemType != null  and itemType != ''">and a.item_type = #{itemType}</if>
+            <if test="groupId != null  and groupId != ''">and a.group_id = #{groupId}</if>
+            <if test="officeId != null  and officeId != ''">and a.office_id = #{officeId}</if>
+            <if test="status != null  and status != ''">and a.status = #{status}</if>
+            <if test="urgeFlag != null  and urgeFlag != ''">and a.urge_flag = #{urgeFlag}</if>
+            <if test="urgeType != null  and urgeType != ''">and a.urge_type = #{urgeType}</if>
+            <if test="stepStatus != null  and stepStatus != ''">and a.step_status = #{stepStatus}</if>
+            <if test="transferFlag != null  and transferFlag != ''">and a.transfer_flag = #{transferFlag}</if>
+            <if test="paras != null and paras.startCast != null and paras.endCast != null">and a.total_cast between #{paras.startCast} and #{paras.endCast}</if>
+            <if test="paras != null and paras.companyName != null">and b.company_name like concat('%', #{paras.companyName}, '%')</if>
+            <if test="paras != null and paras.companyCode != null">and b.company_code = #{paras.companyCode}</if>
+            <if test="paras != null and paras.companyClassify != null">and b.classify_type = #{paras.companyClassify}</if>
+            <if test="paras != null and paras.companyUser != null">and b.company_legal_person like concat('%', #{paras.companyUser}, '%')</if>
+            <if test="paras != null and paras.companyAddress != null">and b.register_address like concat('%', #{paras.companyAddress}, '%')</if>
+            <if test="industry != null and industry !=''">and b.industry like concat('%', #{industry}, '%')</if>
+        </where>
+        order by a.create_date desc
+    </select>
+
+
+    <insert id="insert" parameterType="ProjectInfo">
+        insert into project_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="title != null  and title != ''">title,</if>
+            <if test="classifyType != null  and classifyType != ''">classify_type,</if>
+            <if test="classifyTypeTwo != null  and classifyTypeTwo != ''">classify_type_two,</if>
+            <if test="sourceType != null  and sourceType != ''">source_type,</if>
+            <if test="sourceTypeTwo != null  and sourceTypeTwo != ''">source_type_two,</if>
+            <if test="industry != null  and industry != ''">industry,</if>
+            <if test="itemType != null  and itemType != ''">item_type,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="totalCast != null ">total_cast,</if>
+            <if test="outputValue != null ">output_value,</if>
+            <if test="estimatedTax != null ">estimated_tax,</if>
+            <if test="totalPeople != null ">total_people,</if>
+            <if test="dealTime != null ">deal_time,</if>
+            <if test="openTime != null ">open_time,</if>
+            <if test="productionTime != null ">production_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateDate != null ">update_date,</if>
+            <if test="groupId != null  and groupId != ''">group_id,</if>
+            <if test="officeId != null  and officeId != ''">office_id,</if>
+            <if test="remarks != null  and remarks != ''">remarks,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+            <if test="code != null  and code != ''">code,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="urgeFlag != null  and urgeFlag != ''">urge_flag,</if>
+            <if test="urgeType != null  and urgeType != ''">urge_type,</if>
+            <if test="urgeLeader != null  and urgeLeader != ''">urge_leader,</if>
+            <if test="stepStatus != null  and stepStatus != ''">step_status,</if>
+            <if test="stepRemark != null  and stepRemark != ''">step_remark,</if>
+            <if test="transferFlag != null  and transferFlag != ''">transfer_flag,</if>
+            <if test="createName != null  and createName != ''">create_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="title != null  and title != ''">#{title},</if>
+            <if test="classifyType != null  and classifyType != ''">#{classifyType},</if>
+            <if test="classifyTypeTwo != null  and classifyTypeTwo != ''">#{classifyTypeTwo},</if>
+            <if test="sourceType != null  and sourceType != ''">#{sourceType},</if>
+            <if test="sourceTypeTwo != null  and sourceTypeTwo != ''">#{sourceTypeTwo},</if>
+            <if test="industry != null  and industry != ''">#{industry},</if>
+            <if test="itemType != null  and itemType != ''">#{itemType},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="totalCast != null ">#{totalCast},</if>
+            <if test="outputValue != null ">#{outputValue},</if>
+            <if test="estimatedTax != null ">#{estimatedTax},</if>
+            <if test="totalPeople != null ">#{totalPeople},</if>
+            <if test="dealTime != null ">#{dealTime},</if>
+            <if test="openTime != null ">#{openTime},</if>
+            <if test="productionTime != null ">#{productionTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateDate != null ">#{updateDate},</if>
+            <if test="groupId != null  and groupId != ''">#{groupId},</if>
+            <if test="officeId != null  and officeId != ''">#{officeId},</if>
+            <if test="remarks != null  and remarks != ''">#{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="urgeFlag != null  and urgeFlag != ''">#{urgeFlag},</if>
+            <if test="urgeType != null  and urgeType != ''">#{urgeType},</if>
+            <if test="urgeLeader != null  and urgeLeader != ''">#{urgeLeader},</if>
+            <if test="stepStatus != null  and stepStatus != ''">#{stepStatus},</if>
+            <if test="stepRemark != null  and stepRemark != ''">#{stepRemark},</if>
+            <if test="transferFlag != null  and transferFlag != ''">#{transferFlag},</if>
+            <if test="createName != null  and createName != ''">#{createName},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ProjectInfo">
+        update project_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null  and title != ''">title = #{title},</if>
+            <if test="classifyType != null  and classifyType != ''">classify_type = #{classifyType},</if>
+            <if test="classifyTypeTwo != null  and classifyTypeTwo != ''">classify_type_two = #{classifyTypeTwo},</if>
+            <if test="sourceType != null  and sourceType != ''">source_type = #{sourceType},</if>
+            <if test="sourceTypeTwo != null  and sourceTypeTwo != ''">source_type_two = #{sourceTypeTwo},</if>
+            <if test="industry != null  and industry != ''">industry = #{industry},</if>
+            <if test="itemType != null  and itemType != ''">item_type = #{itemType},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="totalCast != null ">total_cast = #{totalCast},</if>
+            <if test="outputValue != null ">output_value = #{outputValue},</if>
+            <if test="estimatedTax != null ">estimated_tax = #{estimatedTax},</if>
+            <if test="totalPeople != null ">total_people = #{totalPeople},</if>
+            <if test="dealTime != null ">deal_time = #{dealTime},</if>
+            <if test="openTime != null ">open_time = #{openTime},</if>
+            <if test="productionTime != null ">production_time = #{productionTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateDate != null ">update_date = #{updateDate},</if>
+            <if test="groupId != null  and groupId != ''">group_id = #{groupId},</if>
+            <if test="officeId != null  and officeId != ''">office_id = #{officeId},</if>
+            <if test="remarks != null  and remarks != ''">remarks = #{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="status != null  and status != ''">status = #{status},</if>
+            <if test="urgeFlag != null  and urgeFlag != ''">urge_flag = #{urgeFlag},</if>
+            <if test="urgeType != null  and urgeType != ''">urge_type = #{urgeType},</if>
+            <if test="urgeLeader != null  and urgeLeader != ''">urge_leader = #{urgeLeader},</if>
+            <if test="stepStatus != null  and stepStatus != ''">step_status = #{stepStatus},</if>
+            <if test="stepRemark != null  and stepRemark != ''">step_remark = #{stepRemark},</if>
+            <if test="transferFlag != null  and transferFlag != ''">transfer_flag = #{transferFlag},</if>
+            <if test="createName != null  and createName != ''">create_name = #{createName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update project_info set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+    </delete>
+
+</mapper>

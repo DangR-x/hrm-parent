@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ProjectTransferMapper">
+    
+    <sql id="projectTransferColumns">
+    a.id AS "id",
+        a.project_id AS "projectId",
+        a.project_name AS "projectName",
+        a.from_group_id AS "fromGroupId",
+        a.from_create_by AS "fromCreateBy",
+        a.from_create_name AS "fromCreateName",
+        a.deal_date AS "dealDate",
+        a.to_create_by AS "toCreateBy",
+        a.to_create_name AS "toCreateName",
+        a.to_group_id AS "toGroupId",
+        a.create_date AS "createDate",
+        a.del_flag AS "delFlag"        </sql>
+
+    <sql id="projectTransferLeftJoin">
+    </sql>
+
+    <select id="get" resultType="ProjectTransfer">
+        SELECT
+        <include refid="projectTransferColumns"/>
+        FROM
+        project_transfer a
+        <include refid="projectTransferLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ProjectTransfer">
+        SELECT
+        <include refid="projectTransferColumns"/>
+        FROM
+        project_transfer a
+        <include refid="projectTransferLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+                                    <if test="projectId != null  and projectId != ''"> and a.project_id = #{projectId}</if>
+                                    <if test="projectName != null  and projectName != ''"> and a.project_name like concat('%', #{projectName}, '%')</if>
+                                    <if test="fromGroupId != null  and fromGroupId != ''"> and a.from_group_id = #{fromGroupId}</if>
+                                        <if test="fromCreateName != null  and fromCreateName != ''"> and a.from_create_name like concat('%', #{fromCreateName}, '%')</if>
+                                            <if test="toCreateName != null  and toCreateName != ''"> and a.to_create_name like concat('%', #{toCreateName}, '%')</if>
+                                    <if test="toGroupId != null  and toGroupId != ''"> and a.to_group_id = #{toGroupId}</if>
+                            </where>
+    </select>
+
+
+    <insert id="insert" parameterType="ProjectTransfer">
+        insert into project_transfer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="projectId != null  and projectId != ''">project_id,</if>
+            <if test="projectName != null  and projectName != ''">project_name,</if>
+            <if test="fromGroupId != null  and fromGroupId != ''">from_group_id,</if>
+            <if test="fromCreateBy != null  and fromCreateBy != ''">from_create_by,</if>
+            <if test="fromCreateName != null  and fromCreateName != ''">from_create_name,</if>
+            <if test="dealDate != null ">deal_date,</if>
+            <if test="toCreateBy != null  and toCreateBy != ''">to_create_by,</if>
+            <if test="toCreateName != null  and toCreateName != ''">to_create_name,</if>
+            <if test="toGroupId != null  and toGroupId != ''">to_group_id,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="projectId != null  and projectId != ''">#{projectId},</if>
+            <if test="projectName != null  and projectName != ''">#{projectName},</if>
+            <if test="fromGroupId != null  and fromGroupId != ''">#{fromGroupId},</if>
+            <if test="fromCreateBy != null  and fromCreateBy != ''">#{fromCreateBy},</if>
+            <if test="fromCreateName != null  and fromCreateName != ''">#{fromCreateName},</if>
+            <if test="dealDate != null ">#{dealDate},</if>
+            <if test="toCreateBy != null  and toCreateBy != ''">#{toCreateBy},</if>
+            <if test="toCreateName != null  and toCreateName != ''">#{toCreateName},</if>
+            <if test="toGroupId != null  and toGroupId != ''">#{toGroupId},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="update" parameterType="ProjectTransfer">
+        update project_transfer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null  and projectId != ''">project_id = #{projectId},</if>
+            <if test="projectName != null  and projectName != ''">project_name = #{projectName},</if>
+            <if test="fromGroupId != null  and fromGroupId != ''">from_group_id = #{fromGroupId},</if>
+            <if test="fromCreateBy != null  and fromCreateBy != ''">from_create_by = #{fromCreateBy},</if>
+            <if test="fromCreateName != null  and fromCreateName != ''">from_create_name = #{fromCreateName},</if>
+            <if test="dealDate != null ">deal_date = #{dealDate},</if>
+            <if test="toCreateBy != null  and toCreateBy != ''">to_create_by = #{toCreateBy},</if>
+            <if test="toCreateName != null  and toCreateName != ''">to_create_name = #{toCreateName},</if>
+            <if test="toGroupId != null  and toGroupId != ''">to_group_id = #{toGroupId},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update project_transfer set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+            </delete>
+
+</mapper>

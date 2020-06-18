@@ -1,0 +1,91 @@
+package ${packageName}.service.impl;
+
+import java.util.List;
+import com.github.pagehelper.PageInfo;
+import com.highnes.attractinvestment.service.BaseService;
+import ${packageName}.entity.${ClassName};
+import ${packageName}.mapper.${ClassName}Mapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+#if($table.crud)
+    #set($service="BaseService")
+#elseif($table.tree)
+    #set($service="TreeService")
+#end
+
+/**
+ * ${functionName}Service接口
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Service
+public class ${ClassName}ServiceImpl extends ${service}<${ClassName}Mapper, ${ClassName}> {
+
+    #set($AttrName=$ClassName.substring(0,1).toLowerCase() + ${ClassName.substring(1)})
+    /**
+     * 根据ID获取信息
+     * @param id
+     * @return
+     */
+    @Override
+    public ${ClassName} get(String id){
+        return super.get(id);
+    }
+
+
+    /**
+     * 查询列表
+     * @param ${AttrName}
+     * @return
+     */
+    @Override
+    public List<${ClassName}> findList(${ClassName} ${AttrName}){
+        return super.findList(${AttrName});
+    }
+
+    /**
+     * 分页查询
+     * @param ${AttrName}
+     * @return
+     */
+    @Override
+    public PageInfo<${ClassName}> findPage(${ClassName} ${AttrName}){
+        return super.findPage(${AttrName});
+    }
+
+    /**
+     * 保存
+     * @param ${AttrName}
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void save(${ClassName} ${AttrName}){
+        super.save(${AttrName});
+    }
+
+    /**
+     * 删除
+     * @param ${AttrName}
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void delete(${ClassName} ${AttrName}){
+        super.delete(${AttrName});
+    }
+
+    /**
+    * 批量删除
+    * @param ids
+    * @return
+    */
+    @Transactional(readOnly = false)
+    public int delete(String ids){
+        String [] arr = ids.split(",");
+        for (String s: arr){
+            delete(new ${ClassName}(s));
+        }
+        return arr.length;
+    }
+}

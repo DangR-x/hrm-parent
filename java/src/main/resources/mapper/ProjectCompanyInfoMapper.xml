@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ProjectCompanyInfoMapper">
+
+    <sql id="projectCompanyInfoColumns">
+    a.id AS "id",
+        a.project_id AS "projectId",
+        a.company_name AS "companyName",
+        a.company_code AS "companyCode",
+        a.classify_type AS "classifyType",
+        a.classify_type_two AS "classifyTypeTwo",
+        a.register_address AS "registerAddress",
+        a.company_description AS "companyDescription",
+        a.last_total_income AS "lastTotalIncome",
+        a.last_pay_taxes AS "lastPayTaxes",
+        a.total_people AS "totalPeople",
+        a.company_source AS "companySource",
+        a.company_legal_person AS "companyLegalPerson",
+        a.company_mobile AS "companyMobile",
+        a.company_license AS "companyLicense",
+        a.del_flag AS "delFlag"        </sql>
+
+    <sql id="projectCompanyInfoLeftJoin">
+    </sql>
+
+    <select id="get" resultType="ProjectCompanyInfo">
+        SELECT
+        <include refid="projectCompanyInfoColumns"/>
+        FROM
+        project_company_info a
+        <include refid="projectCompanyInfoLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ProjectCompanyInfo">
+        SELECT
+        <include refid="projectCompanyInfoColumns"/>
+        FROM
+        project_company_info a
+        <include refid="projectCompanyInfoLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="projectId != null  and projectId != ''">and a.project_id = #{projectId}</if>
+            <if test="companyName != null  and companyName != ''">and a.company_name like concat('%', #{companyName},
+                '%')
+            </if>
+            <if test="classifyType != null  and classifyType != ''">and a.classify_type = #{classifyType}</if>
+            <if test="classifyTypeTwo != null  and classifyTypeTwo != ''">and a.classify_type_two = #{classifyTypeTwo}
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="ProjectCompanyInfo">
+        insert into project_company_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="projectId != null  and projectId != ''">project_id,</if>
+            <if test="companyName != null  and companyName != ''">company_name,</if>
+            <if test="companyCode != null  and companyCode != ''">company_code,</if>
+            <if test="classifyType != null  and classifyType != ''">classify_type,</if>
+            <if test="classifyTypeTwo != null  and classifyTypeTwo != ''">classify_type_two,</if>
+            <if test="registerAddress != null  and registerAddress != ''">register_address,</if>
+            <if test="companyDescription != null  and companyDescription != ''">company_description,</if>
+            <if test="lastTotalIncome != null ">last_total_income,</if>
+            <if test="lastPayTaxes != null ">last_pay_taxes,</if>
+            <if test="totalPeople != null ">total_people,</if>
+            <if test="companySource != null  and companySource != ''">company_source,</if>
+            <if test="companyLegalPerson != null  and companyLegalPerson != ''">company_legal_person,</if>
+            <if test="companyMobile != null  and companyMobile != ''">company_mobile,</if>
+            <if test="companyLicense != null  and companyLicense != ''">company_license,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="projectId != null  and projectId != ''">#{projectId},</if>
+            <if test="companyName != null  and companyName != ''">#{companyName},</if>
+            <if test="companyCode != null  and companyCode != ''">#{companyCode},</if>
+            <if test="classifyType != null  and classifyType != ''">#{classifyType},</if>
+            <if test="classifyTypeTwo != null  and classifyTypeTwo != ''">#{classifyTypeTwo},</if>
+            <if test="registerAddress != null  and registerAddress != ''">#{registerAddress},</if>
+            <if test="companyDescription != null  and companyDescription != ''">#{companyDescription},</if>
+            <if test="lastTotalIncome != null ">#{lastTotalIncome},</if>
+            <if test="lastPayTaxes != null ">#{lastPayTaxes},</if>
+            <if test="totalPeople != null ">#{totalPeople},</if>
+            <if test="companySource != null  and companySource != ''">#{companySource},</if>
+            <if test="companyLegalPerson != null  and companyLegalPerson != ''">#{companyLegalPerson},</if>
+            <if test="companyMobile != null  and companyMobile != ''">#{companyMobile},</if>
+            <if test="companyLicense != null  and companyLicense != ''">#{companyLicense},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ProjectCompanyInfo">
+        update project_company_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null  and projectId != ''">project_id = #{projectId},</if>
+            <if test="companyName != null  and companyName != ''">company_name = #{companyName},</if>
+            <if test="companyCode != null  and companyCode != ''">company_code = #{companyCode},</if>
+            <if test="classifyType != null  and classifyType != ''">classify_type = #{classifyType},</if>
+            <if test="classifyTypeTwo != null  and classifyTypeTwo != ''">classify_type_two = #{classifyTypeTwo},</if>
+            <if test="registerAddress != null  and registerAddress != ''">register_address = #{registerAddress},</if>
+            <if test="companyDescription != null  and companyDescription != ''">company_description =
+                #{companyDescription},
+            </if>
+            <if test="lastTotalIncome != null ">last_total_income = #{lastTotalIncome},</if>
+            <if test="lastPayTaxes != null ">last_pay_taxes = #{lastPayTaxes},</if>
+            <if test="totalPeople != null ">total_people = #{totalPeople},</if>
+            <if test="companySource != null  and companySource != ''">company_source = #{companySource},</if>
+            <if test="companyLegalPerson != null  and companyLegalPerson != ''">company_legal_person =
+                #{companyLegalPerson},
+            </if>
+            <if test="companyMobile != null  and companyMobile != ''">company_mobile = #{companyMobile},</if>
+            <if test="companyLicense != null  and companyLicense != ''">company_license = #{companyLicense},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update project_company_info set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+    </delete>
+
+    <delete id="deleteByProject" parameterType="String">
+        delete from project_company_info where project_id = #{projectId}
+    </delete>
+
+</mapper>

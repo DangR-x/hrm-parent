@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.IndustrialImagesMapper">
+    
+    <sql id="industrialImagesColumns">
+    a.id AS "id",
+        a.industrial_id AS "industrialId",
+        a.images AS "images"        </sql>
+
+    <sql id="industrialImagesLeftJoin">
+    </sql>
+
+    <select id="get" resultType="IndustrialImages">
+        SELECT
+        <include refid="industrialImagesColumns"/>
+        FROM
+        industrial_images a
+        <include refid="industrialImagesLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="IndustrialImages">
+        SELECT
+        <include refid="industrialImagesColumns"/>
+        FROM
+        industrial_images a
+        <include refid="industrialImagesLeftJoin"/>
+        <where>
+            1=1
+            <if test="industrialId != null  and industrialId != ''"> and a.industrial_id = #{industrialId}</if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="IndustrialImages">
+        insert into industrial_images
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="industrialId != null  and industrialId != ''">industrial_id,</if>
+            <if test="images != null  and images != ''">images,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="industrialId != null  and industrialId != ''">#{industrialId},</if>
+            <if test="images != null  and images != ''">#{images},</if>
+         </trim>
+    </insert>
+
+    <update id="update" parameterType="IndustrialImages">
+        update industrial_images
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="industrialId != null  and industrialId != ''">industrial_id = #{industrialId},</if>
+            <if test="images != null  and images != ''">images = #{images},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        delete from industrial_images where id = #{id}
+    </delete>
+
+    <delete id="deletefromIndustrialId" parameterType="String">
+        delete from industrial_images where id = #{id}
+    </delete>
+
+</mapper>

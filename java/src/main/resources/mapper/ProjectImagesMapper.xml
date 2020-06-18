@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.ProjectImagesMapper">
+
+    <sql id="projectImagesColumns">
+    a.id AS "id",
+        a.project_id AS "projectId",
+        a.status AS "status",
+        a.upload_flag AS "uploadFlag",
+        a.upload_code AS "uploadCode",
+        a.signing_flag AS "signingFlag",
+        a.signing_date AS "signingDate",
+        a.open_flag AS "openFlag",
+        a.open_date AS "openDate",
+        a.del_flag AS "delFlag"        </sql>
+
+    <sql id="projectImagesLeftJoin">
+    </sql>
+
+    <select id="get" resultType="ProjectImages">
+        SELECT
+        <include refid="projectImagesColumns"/>
+        FROM
+        project_images a
+        <include refid="projectImagesLeftJoin"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ProjectImages">
+        SELECT
+        <include refid="projectImagesColumns"/>
+        FROM
+        project_images a
+        <include refid="projectImagesLeftJoin"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="projectId != null  and projectId != ''">and a.project_id = #{projectId}</if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="ProjectImages">
+        insert into project_images
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="projectId != null  and projectId != ''">project_id,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="uploadFlag != null  and uploadFlag != ''">upload_flag,</if>
+            <if test="uploadCode != null  and uploadCode != ''">upload_code,</if>
+            <if test="signingFlag != null  and signingFlag != ''">signing_flag,</if>
+            <if test="signingDate != null ">signing_date,</if>
+            <if test="openFlag != null  and openFlag != ''">open_flag,</if>
+            <if test="openDate != null ">open_date,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="projectId != null  and projectId != ''">#{projectId},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="uploadFlag != null  and uploadFlag != ''">#{uploadFlag},</if>
+            <if test="uploadCode != null  and uploadCode != ''">#{uploadCode},</if>
+            <if test="signingFlag != null  and signingFlag != ''">#{signingFlag},</if>
+            <if test="signingDate != null ">#{signingDate},</if>
+            <if test="openFlag != null  and openFlag != ''">#{openFlag},</if>
+            <if test="openDate != null ">#{openDate},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ProjectImages">
+        update project_images
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null  and projectId != ''">project_id = #{projectId},</if>
+            <if test="status != null  and status != ''">status = #{status},</if>
+            <if test="uploadFlag != null  and uploadFlag != ''">upload_flag = #{uploadFlag},</if>
+            <if test="uploadCode != null  and uploadCode != ''">upload_code = #{uploadCode},</if>
+            <if test="signingFlag != null  and signingFlag != ''">signing_flag = #{signingFlag},</if>
+            <if test="signingDate != null ">signing_date = #{signingDate},</if>
+            <if test="openFlag != null  and openFlag != ''">open_flag = #{openFlag},</if>
+            <if test="openDate != null ">open_date = #{openDate},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        update project_images set del_flag = #{DEL_FLAG_DELETE} where id = #{id}
+    </delete>
+
+    <delete id="deleteByProject" parameterType="String">
+        delete from project_images where project_id = #{projectId}
+    </delete>
+
+</mapper>

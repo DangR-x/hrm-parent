@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.SysRoleMapper">
+    
+    <sql id="sysRoleColumns">
+    a.role_id AS "roleId",
+        a.role_name AS "roleName",
+        a.role_key AS "roleKey",
+        a.role_sort AS "roleSort",
+        a.data_scope AS "dataScope",
+        a.status AS "status",
+        a.del_flag AS "delFlag",
+        a.create_by AS "createBy",
+        a.create_date AS "createDate",
+        a.update_by AS "updateBy",
+        a.update_Date AS "updateDate",
+        a.remark AS "remark"        </sql>
+
+    <sql id="sysRoleLeftJoin">
+    </sql>
+
+    <select id="get" resultType="SysRole">
+        SELECT
+        <include refid="sysRoleColumns"/>
+        FROM
+        sys_role a
+        <include refid="sysRoleLeftJoin"/>
+        WHERE a.role_id = #{id}
+    </select>
+
+    <select id="findList" resultType="SysRole">
+        SELECT
+        <include refid="sysRoleColumns"/>
+        FROM
+        sys_role a
+        <include refid="sysRoleLeftJoin"/>
+        <where>
+        a.del_flag = #{DEL_FLAG_NORMAL}
+        <if test="roleName != null  and roleName != ''"> and a.role_name like concat('%', #{roleName}, '%')</if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="SysRole" useGeneratedKeys="true" keyProperty="roleId">
+        insert into sys_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleName != null  and roleName != ''">role_name,</if>
+            <if test="roleKey != null  and roleKey != ''">role_key,</if>
+            <if test="roleSort != null ">role_sort,</if>
+            <if test="dataScope != null  and dataScope != ''">data_scope,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateDate != null ">update_date,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleName != null  and roleName != ''">#{roleName},</if>
+            <if test="roleKey != null  and roleKey != ''">#{roleKey},</if>
+            <if test="roleSort != null ">#{roleSort},</if>
+            <if test="dataScope != null  and dataScope != ''">#{dataScope},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateDate != null ">#{updateDate},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="update" parameterType="SysRole">
+        update sys_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleName != null  and roleName != ''">role_name = #{roleName},</if>
+            <if test="roleKey != null  and roleKey != ''">role_key = #{roleKey},</if>
+            <if test="roleSort != null ">role_sort = #{roleSort},</if>
+            <if test="dataScope != null  and dataScope != ''">data_scope = #{dataScope},</if>
+            <if test="status != null  and status != ''">status = #{status},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateDate != null ">update_date = #{updateDate},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+        </trim>
+        where role_id = #{roleId}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        update sys_role set del_flag = #{DEL_FLAG_DELETE} where role_id = #{roleId}
+    </delete>
+    
+    <select id="selRoleInfoList" resultType="com.highnes.attractinvestment.domain.SysRoleRequest">
+        select count(s1.role_id) as roleNum,s2.role_name as roleName ,s4.dept_name as deptName,s2.create_date as createDate,s2.`status`  from sys_user_role s1
+
+        LEFT JOIN sys_role s2 on s1.role_id = s2.role_id
+
+        LEFT JOIN sys_user s3 on s1.user_id = s3.user_id
+
+        LEFT JOIN sys_dept s4 on s3.dept_id = s4.dept_id
+
+        <where>
+            s2.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="roleName != null  and roleName != ''"> and s2.role_name like concat('%', #{roleName}, '%')</if>
+            <if test="deptName != null  and deptName != ''"> and s4.dept_name like concat('%', #{deptName}, '%')</if>
+        </where>
+        GROUP BY s1.role_id
+    </select>
+
+</mapper>

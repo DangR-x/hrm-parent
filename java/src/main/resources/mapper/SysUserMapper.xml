@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.SysUserMapper">
+    
+    <sql id="sysUserColumns">
+    a.user_id AS "userId",
+        a.login_name AS "loginName",
+        a.user_name AS "userName",
+        a.user_type AS "userType",
+        a.email AS "email",
+        a.phonenumber AS "phonenumber",
+        a.sex AS "sex",
+        a.avatar AS "avatar",
+        a.password AS "password",
+        a.salt AS "salt",
+        a.dept_id AS "deptId",
+        a.status AS "status",
+        a.del_flag AS "delFlag",
+        a.login_ip AS "loginIp",
+        a.login_date AS "loginDate",
+        a.create_by AS "createBy",
+        a.create_date AS "createDate",
+        a.update_by AS "updateBy",
+        a.update_date AS "updateDate",
+        a.remark AS "remark"        </sql>
+
+    <sql id="sysUserLeftJoin">
+    </sql>
+
+    <select id="get" resultType="SysUser">
+        SELECT
+        <include refid="sysUserColumns"/>
+        FROM
+        sys_user a
+        <include refid="sysUserLeftJoin"/>
+        WHERE a.user_id = #{id}
+    </select>
+
+
+    <select id="getUserByLoginName" resultType="SysUser">
+        SELECT
+        <include refid="sysUserColumns"/>
+        FROM
+        sys_user a
+        <include refid="sysUserLeftJoin"/>
+        WHERE a.login_name = #{loginName}
+    </select>
+
+    <select id="findList" resultType="SysUser">
+        SELECT
+        <include refid="sysUserColumns"/>
+        FROM
+        sys_user a
+        <include refid="sysUserLeftJoin"/>
+        <where>
+        a.del_flag = #{DEL_FLAG_NORMAL}
+        <if test="loginName != null  and loginName != ''"> and a.login_name like concat('%', #{loginName}, '%')</if>
+        <if test="userName != null  and userName != ''"> and a.user_name like concat('%', #{userName}, '%')</if>
+        <if test="userType != null  and userType != ''"> and a.user_type = #{userType}</if>
+        <if test="deptId != null "> and a.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="loginName != null  and loginName != ''">login_name,</if>
+            <if test="userName != null  and userName != ''">user_name,</if>
+            <if test="userType != null  and userType != ''">user_type,</if>
+            <if test="email != null  and email != ''">email,</if>
+            <if test="phonenumber != null  and phonenumber != ''">phonenumber,</if>
+            <if test="sex != null  and sex != ''">sex,</if>
+            <if test="avatar != null  and avatar != ''">avatar,</if>
+            <if test="password != null  and password != ''">password,</if>
+            <if test="salt != null  and salt != ''">salt,</if>
+            <if test="deptId != null ">dept_id,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+            <if test="loginIp != null  and loginIp != ''">login_ip,</if>
+            <if test="loginDate != null ">login_date,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateDate != null ">update_date,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="loginName != null  and loginName != ''">#{loginName},</if>
+            <if test="userName != null  and userName != ''">#{userName},</if>
+            <if test="userType != null  and userType != ''">#{userType},</if>
+            <if test="email != null  and email != ''">#{email},</if>
+            <if test="phonenumber != null  and phonenumber != ''">#{phonenumber},</if>
+            <if test="sex != null  and sex != ''">#{sex},</if>
+            <if test="avatar != null  and avatar != ''">#{avatar},</if>
+            <if test="password != null  and password != ''">#{password},</if>
+            <if test="salt != null  and salt != ''">#{salt},</if>
+            <if test="deptId != null ">#{deptId},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+            <if test="loginIp != null  and loginIp != ''">#{loginIp},</if>
+            <if test="loginDate != null ">#{loginDate},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateDate != null ">#{updateDate},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="update" parameterType="SysUser">
+        update sys_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="loginName != null  and loginName != ''">login_name = #{loginName},</if>
+            <if test="userName != null  and userName != ''">user_name = #{userName},</if>
+            <if test="userType != null  and userType != ''">user_type = #{userType},</if>
+            <if test="email != null  and email != ''">email = #{email},</if>
+            <if test="phonenumber != null  and phonenumber != ''">phonenumber = #{phonenumber},</if>
+            <if test="sex != null  and sex != ''">sex = #{sex},</if>
+            <if test="avatar != null  and avatar != ''">avatar = #{avatar},</if>
+            <if test="password != null  and password != ''">password = #{password},</if>
+            <if test="salt != null  and salt != ''">salt = #{salt},</if>
+            <if test="deptId != null ">dept_id = #{deptId},</if>
+            <if test="status != null  and status != ''">status = #{status},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="loginIp != null  and loginIp != ''">login_ip = #{loginIp},</if>
+            <if test="loginDate != null ">login_date = #{loginDate},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateDate != null ">update_date = #{updateDate},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        update sys_user set del_flag = 1 where user_id = #{userId}
+    </delete>
+
+    <select id="selUserByConditions" resultType="SysUser">
+        SELECT
+        <include refid="sysUserColumns"/>
+        from sys_user a
+        LEFT JOIN sys_user_role b on a.user_id = b.user_id
+        LEFT JOIN sys_user_post e on a.user_id = e.user_id
+        <where>
+            a.del_flag = 0
+            <if test="deptId != null  and deptId != ''"> and a.dept_id  = #{deptId}</if>
+            <if test="postId != null  and postId != ''"> and e.post_id  = #{postId}</if>
+            <if test="roleId != null  and roleId != ''"> and b.role_id  = #{roleId}</if>
+        </where>
+    </select>
+
+</mapper>

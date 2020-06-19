@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="loginName != null  and loginName != ''"> and a.login_name like concat('%', #{loginName}, '%')</if>
         <if test="userName != null  and userName != ''"> and a.user_name like concat('%', #{userName}, '%')</if>
         <if test="userType != null  and userType != ''"> and a.user_type = #{userType}</if>
-        <if test="deptId != null "> and a.dept_id = #{deptId}</if>
+        <if test="deptId != null and deptId !='' "> and a.dept_id = #{deptId}</if>
         </where>
     </select>
 

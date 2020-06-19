@@ -37,7 +37,6 @@ public class SystemController extends BaseController {
     })
     public Object login(@RequestBody SysUser sysUser){
 
-        System.out.println(sysUser);
 
         try {
             Map<String,Object> map = sysUserService.isLogin(sysUser);

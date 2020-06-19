@@ -1,6 +1,5 @@
 package com.highnes.attractinvestment.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Date;
 
@@ -55,7 +54,6 @@ public class SysUser extends BaseEntity<SysUser> {
     /**
      * 密码
      */
-    //@JsonIgnore
     private String password;
 
     /**

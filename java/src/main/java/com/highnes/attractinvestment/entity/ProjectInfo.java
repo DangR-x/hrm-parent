@@ -18,37 +18,30 @@ public class ProjectInfo extends BaseEntity<ProjectInfo> {
     /**
      * 项目名称
      */
-    @Excel(name = "title")
     private String title;
     /**
      * 项目编号
      */
-    @Excel(name = "code")
     private String code;
     /**
      * 状态：1-在谈，2-拟签约，3-已签约
      */
-    @Excel(name = "staus")
     private String status;
     /**
      * 是否督办项目：1-是，0-否
      */
-    @Excel(name = "urge_flag")
     private String urgeFlag;
     /**
      * 督办类型：1-普通督办，2-重点督办
      */
-    @Excel(name = "urge_type")
     private String urgeType;
     /**
      * 督办领导
      */
-    @Excel(name = "urge_leader")
     private String urgeLeader;
     /**
      * 阶段状态：0-正常，1-暂停，2-重启，3-终止
      */
-    @Excel(name = "step_status")
     private String stepStatus;
     /**
      * 阶段描述
@@ -58,84 +51,85 @@ public class ProjectInfo extends BaseEntity<ProjectInfo> {
     /**
      * 所属行业
      */
-    @Excel(name = "classify_type")
     private String classifyType;
-    @Excel(name = "classify_type_two")
     private String classifyTypeTwo;
 
     /**
      * 所属产业
      */
-    @Excel(name = "industry")
     private String industry;
 
     /**
      * 信息来源
      */
-    @Excel(name = "source_type")
     private String sourceType;
-    @Excel(name = "source_type_two")
     private String sourceTypeTwo;
 
     /**
      * 项目类型
      */
-    @Excel(name = "item_type")
     private String itemType;
 
     /**
      * 项目简介
      */
-    @Excel(name = "description")
     private String description;
 
     /**
      * 预计投资总额
      */
-    //@Excel(name = "total_cast")
     private Double totalCast;
 
     /**
      * 预计年产值
      */
-    //@Excel(name = "output_value")
     private Double outputValue;
 
     /**
      * 预计税收
      */
-    //@Excel(name = "estimated_tax")
     private Double estimatedTax;
 
     /**
      * 预计用工数
      */
-    //@Excel(name = "total_people")
     private Integer totalPeople;
 
     /**
      * 交办时间
      */
-    //@Excel(name = "deal_time")
     private Date dealTime;
 
     /**
      * 计划开工时间
      */
-    //@Excel(name = "open_time")
     private Date openTime;
 
     /**
      * 计划投产时间
      */
-    //@Excel(name = "production_time")
     private Date productionTime;
 
     /**
      * 所属小组
      */
-    @Excel(name = "group_id")
     private String groupId;
+
+    /**
+     * 项目投资人类型 1 企业  ， 2个人
+     */
+    private String investortype;
+
+    /**
+     * 项目投资公司
+     */
+    private String companyid;
+
+    /**
+     * 项目个人投资人
+     */
+    private Long investorid;
+
     /**
      * 空间需求
      */
@@ -438,5 +432,29 @@ public class ProjectInfo extends BaseEntity<ProjectInfo> {
 
     public void setIndustry(String industry) {
         this.industry = industry;
+    }
+
+    public String getInvestortype() {
+        return investortype;
+    }
+
+    public void setInvestortype(String investortype) {
+        this.investortype = investortype;
+    }
+
+    public String getCompanyid() {
+        return companyid;
+    }
+
+    public void setCompanyid(String companyid) {
+        this.companyid = companyid;
+    }
+
+    public Long getInvestorid() {
+        return investorid;
+    }
+
+    public void setInvestorid(Long investorid) {
+        this.investorid = investorid;
     }
 }

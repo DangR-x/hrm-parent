@@ -85,6 +85,12 @@ public class ProjectInfoRequest {
     private List<ImagesRequest> imagesRequestList;
     @ApiModelProperty(name = "projectInvestor", value = "投资人", position = 30)
     private List<ProjectInvestor> projectInvestors;
+    @ApiModelProperty(name = "investortype", example = "项目投资人类型 1 企业  ， 2个人", position = 32)
+    private String investortype;
+    @ApiModelProperty(name = "companyid", example = "项目投资公司", position = 33)
+    private String companyid;
+    @ApiModelProperty(name = "investorid", example = "项目个人投资人", position = 34)
+    private Long investorid;
 
     public List<ProjectInvestor> getProjectInvestors() {
         return projectInvestors;
@@ -92,6 +98,30 @@ public class ProjectInfoRequest {
 
     public void setProjectInvestors(List<ProjectInvestor> projectInvestors) {
         this.projectInvestors = projectInvestors;
+    }
+
+    public String getInvestortype() {
+        return investortype;
+    }
+
+    public void setInvestortype(String investortype) {
+        this.investortype = investortype;
+    }
+
+    public String getCompanyid() {
+        return companyid;
+    }
+
+    public void setCompanyid(String companyid) {
+        this.companyid = companyid;
+    }
+
+    public Long getInvestorid() {
+        return investorid;
+    }
+
+    public void setInvestorid(Long investorid) {
+        this.investorid = investorid;
     }
 
     /**

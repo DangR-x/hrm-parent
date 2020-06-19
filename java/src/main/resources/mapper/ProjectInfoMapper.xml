@@ -37,7 +37,10 @@
             a.step_remark as "stepRemark",
             a.transfer_flag as "transferFlag",
             a.create_name as "createName",
-            a.industry as "industry"
+            a.industry as "industry",
+            a.investortype as "investortype",
+            a.companyid as "companyid",
+            a.investorid as "investorid"
         </sql>
 
     <sql id="projectInfoLeftJoin">
@@ -45,6 +48,10 @@
             left join project_company_info b on a.id = b.project_id
         </if>
     </sql>
+
+    <select id="findPageByUserIds" resultType="ProjectInfo">
+        <include refid="projectInfoColumns"/> from project_info a where a.create_by in ( #{IDs} )
+    </select>
 
     <select id="get" resultType="ProjectInfo">
         SELECT
@@ -74,13 +81,17 @@
             <if test="urgeType != null  and urgeType != ''">and a.urge_type = #{urgeType}</if>
             <if test="stepStatus != null  and stepStatus != ''">and a.step_status = #{stepStatus}</if>
             <if test="transferFlag != null  and transferFlag != ''">and a.transfer_flag = #{transferFlag}</if>
-            <if test="paras != null and paras.startCast != null and paras.endCast != null">and a.total_cast between #{paras.startCast} and #{paras.endCast}</if>
-            <if test="paras != null and paras.companyName != null">and b.company_name like concat('%', #{paras.companyName}, '%')</if>
-            <if test="paras != null and paras.companyCode != null">and b.company_code = #{paras.companyCode}</if>
-            <if test="paras != null and paras.companyClassify != null">and b.classify_type = #{paras.companyClassify}</if>
-            <if test="paras != null and paras.companyUser != null">and b.company_legal_person like concat('%', #{paras.companyUser}, '%')</if>
-            <if test="paras != null and paras.companyAddress != null">and b.register_address like concat('%', #{paras.companyAddress}, '%')</if>
-            <if test="industry != null and industry !=''">and b.industry like concat('%', #{industry}, '%')</if>
+            <if test="industry != null and industry !=''">and a.industry = #{industry} </if>
+            <if test="investortype != null and investortype !=''">and a.investortype = #{investortype} </if>
+            <if test="companyid != null and companyid !=''">and a.companyid = #{companyid} </if>
+            <if test="investorid != null and investorid !=''">and a.investorid = #{investorid} </if>
+            <if test="paras != null and paras.startCast != null and paras.startCast != '' and paras.endCast != null and paras.endCast != ''">and a.total_cast between #{paras.startCast} and #{paras.endCast}</if>
+            <if test="paras != null and paras.companyName != null and paras.companyName != ''">and b.company_name like concat('%', #{paras.companyName}, '%')</if>
+            <if test="paras != null and paras.companyCode != null and paras.companyCode != ''">and b.company_code = #{paras.companyCode}</if>
+            <if test="paras != null and paras.companyClassify != null and paras.companyClassify != ''">and b.classify_type = #{paras.companyClassify}</if>
+            <if test="paras != null and paras.companyUser != null and paras.companyUser != ''">and b.company_legal_person like concat('%', #{paras.companyUser}, '%')</if>
+            <if test="paras != null and paras.companyAddress != null and paras.companyAddress != ''">and b.register_address like concat('%', #{paras.companyAddress}, '%')</if>
+
         </where>
         order by a.create_date desc
     </select>
@@ -122,6 +133,9 @@
             <if test="stepRemark != null  and stepRemark != ''">step_remark,</if>
             <if test="transferFlag != null  and transferFlag != ''">transfer_flag,</if>
             <if test="createName != null  and createName != ''">create_name,</if>
+            <if test="investortype != null and investortype !=''">investortype, </if>
+            <if test="companyid != null and companyid !=''">companyid,</if>
+            <if test="investorid != null and investorid !=''">investorid,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null  and id != ''">#{id},</if>
@@ -157,6 +171,9 @@
             <if test="stepRemark != null  and stepRemark != ''">#{stepRemark},</if>
             <if test="transferFlag != null  and transferFlag != ''">#{transferFlag},</if>
             <if test="createName != null  and createName != ''">#{createName},</if>
+            <if test="investortype != null and investortype !=''">#{investortype}, </if>
+            <if test="companyid != null and companyid !=''">#{companyid}, </if>
+            <if test="investorid != null and investorid !=''">#{investorid}, </if>
         </trim>
     </insert>
 
@@ -195,6 +212,9 @@
             <if test="stepRemark != null  and stepRemark != ''">step_remark = #{stepRemark},</if>
             <if test="transferFlag != null  and transferFlag != ''">transfer_flag = #{transferFlag},</if>
             <if test="createName != null  and createName != ''">create_name = #{createName},</if>
+            <if test="investortype != null and investortype !=''">investortype = #{investortype}, </if>
+            <if test="companyid != null and companyid !=''">companyid = #{companyid}, </if>
+            <if test="investorid != null and investorid !=''">investorid = #{investorid} </if>
         </trim>
         where id = #{id}
     </update>

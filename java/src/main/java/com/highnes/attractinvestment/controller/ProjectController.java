@@ -85,12 +85,13 @@ public class ProjectController extends BaseController {
             @ApiImplicitParam(name = "companyAddress", value = "企业注册地", required = false, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "companyClassify", value = "企业行业-门类", required = false, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "transferFlag", value = "是否投促项目：0-否，1-是", required = false, dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "createBy", value = "项目创建人id", required = false, dataType = "string", paramType = "query"),
     })
     @Login
     public ResultMessage queryProjectPage(Integer pageNo, Integer pageSize, String projectName, String projectCode, String status,
                                           String urgeFlag, String urgeType, String stepStatus, String classifyType, String classifyTypeTwo, String itemType,
                                           String startCast, String endCast, String sourceType, String groupId, String companyName, String companyCode, String companyUser,
-                                          String companyAddress, String companyClassify, String transferFlag){
+                                          String companyAddress, String companyClassify, String transferFlag,String createBy){
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setPageNo(pageNo==null?1:pageNo);
         projectInfo.setPageSize(pageSize==null?10:pageSize);
@@ -106,6 +107,7 @@ public class ProjectController extends BaseController {
         projectInfo.setSourceType(sourceType);
         projectInfo.setGroupId(groupId);
         projectInfo.setTransferFlag(transferFlag);
+        projectInfo.setCreateBy(createBy);
 
         Map<String, Object> paras = Maps.newHashMap();
         paras.put("startCast", startCast);
@@ -117,6 +119,8 @@ public class ProjectController extends BaseController {
         paras.put("companyClassify", companyClassify);
         projectInfo.setParas(paras);
         PageInfo<ProjectInfo> pageInfo = projectInfoService.findPage(projectInfo);
+        System.out.println(projectInfo.toString());
+
         return ResultMessage.success(pageInfo);
     }
 
@@ -212,6 +216,7 @@ public class ProjectController extends BaseController {
         }
         ProjectInfo projectInfo = projectInfoService.get(projectInfoRequest.getProjectId());
         projectInfo.setTitle(projectInfoRequest.getTitle());
+
         String code = projectInfoRequest.getCode();
         if (StringUtils.isBlank(projectInfoRequest.getCode())){
             // 项目编号：SPB+当前日期+6位随机数
@@ -219,6 +224,7 @@ public class ProjectController extends BaseController {
         }
         // 项目编号
         projectInfo.setCode(code);
+
         // 状态
         projectInfo.setStatus(projectInfoRequest.getStatus());
         // 是否督办项目：0-否，1-是

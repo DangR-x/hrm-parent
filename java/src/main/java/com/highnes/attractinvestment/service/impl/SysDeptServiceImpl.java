@@ -76,8 +76,6 @@ public class SysDeptServiceImpl extends BaseService<SysDeptMapper, SysDept> {
         //判断该部门是几级部门
         String deptLevel = sysDept.getDeptLevel();
 
-        logger.info("deptLevel:"+deptLevel);
-
         SysUser sysUser = new SysUser();
         // deptLevel 0全公司的员工 ， 1 分公司的全部员工   2，分公司部门的员工
         if(deptLevel.equals("0")){
@@ -85,16 +83,11 @@ public class SysDeptServiceImpl extends BaseService<SysDeptMapper, SysDept> {
             List<SysUser> list = page.getList();
             return list;
         }else if(deptLevel.equals("1")){
-            List<SysDept> sysDepts = findDeptByparentId(sysDept.getParentId());
+            List<SysDept> sysDepts = findDeptByparentId(sysDept.getDeptId());
             ArrayList<SysUser> sysUsers = new ArrayList<>();
             for (SysDept dept : sysDepts) {
-
                 sysUser.setDeptId(dept.getDeptId().toString());
-                logger.info(sysUser);
                 List<SysUser> list = sysUserMapper.findList(sysUser);
-
-                logger.info(list);
-
                 sysUsers.addAll(list);
                 return sysUsers;
             }

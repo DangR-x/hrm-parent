@@ -3,10 +3,14 @@ package com.highnes.attractinvestment.service.impl;
 import java.util.List;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.highnes.attractinvestment.common.utils.StringUtils;
+import com.highnes.attractinvestment.entity.SysUser;
+import com.highnes.attractinvestment.mapper.SysUserMapper;
 import com.highnes.attractinvestment.service.BaseService;
 import com.highnes.attractinvestment.entity.ProjectInfo;
 import com.highnes.attractinvestment.mapper.ProjectInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +26,18 @@ public class ProjectInfoServiceImpl extends BaseService<ProjectInfoMapper, Proje
 
     @Autowired
     private ProjectAreaDetailsServiceImpl projectAreaDetailsService;
+
     @Autowired
     private ProjectCompanyDetailsServiceImpl projectCompanyDetailsService;
+
     @Autowired
     private ProjectProspectusDetailsServiceImpl projectProspectusDetailsService;
+
+    @Autowired
+    private SysUserServiceImpl sysUserService;
+
+    @Autowired
+    private SysDeptServiceImpl sysDeptService;
 
         /**
      * 根据ID获取信息
@@ -54,9 +66,34 @@ public class ProjectInfoServiceImpl extends BaseService<ProjectInfoMapper, Proje
      * @return
      */
     @Override
+    @Transactional(readOnly = false)
     public PageInfo<ProjectInfo> findPage(ProjectInfo projectInfo){
+        if(projectInfo.getItemType()!=null){
+            projectInfo.setStatus("3");
+        }
+        if(StringUtils.isNotBlank(projectInfo.getCreateBy())){
+
+            findPageByCreateId(projectInfo.getCreateBy());
+
+        }
         return super.findPage(projectInfo);
     }
+
+    /**
+     *
+     * @param CreateById  项目管理员id
+     * @return          该管理员所在部门的所有项目
+     */
+    @Transactional(readOnly = false)
+    public PageInfo<ProjectInfo> findPageByCreateId(String CreateById){
+        SysUser sysUser = sysUserService.get(CreateById);
+        List<SysUser> deptUserByDeptId = sysDeptService.findDeptUserByDeptId(Long.valueOf(sysUser.getDeptId()));
+        String ids= null;
+        //通过userids查询该项目
+        List<ProjectInfo> userIds = super.mapper.findPageByUserIds(ids);
+        return null;
+    }
+
 
     /**
      * 保存

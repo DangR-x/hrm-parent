@@ -70,23 +70,14 @@ public class SysDeptController extends BaseController {
      * @param deptId   部门id
      * @return     返回该部门所有员工
      */
-    @RequestMapping(value = "DeptUser" , method = RequestMethod.GET)
-    @ApiOperation(notes = "DeptUser",value = "部门员工")
-    public List<SysUser> getDepUser( Long deptId){
-        List<SysUser> deptUserByDeptId = sysDeptService.findDeptUserByDeptId(deptId);
+    @RequestMapping(value = "getDepUser" , method = RequestMethod.POST)
+    @ApiOperation(notes = "getDepUser",value = "部门所有员工")
+    public List<SysUser> getDepUser(@RequestBody SysUser sysUser){
+        List<SysUser> deptUserByDeptId = sysDeptService.findDeptUserByDeptId(sysUser);
         return deptUserByDeptId;
     }
 
-    /**
-     *
-     * @return  返回所以一级部门
-     */
-    @RequestMapping(value = "parentDept",method = RequestMethod.GET)
-    @ApiOperation(notes = "parentDept",value = "一级单位")
-    public List<SysDept> getParentDept(){
-        List<SysDept> parentList = sysDeptService.findParentList();
-        return parentList;
-    }
+
 
     /**
      * 删除单位

@@ -56,60 +56,42 @@ public class SysDeptServiceImpl extends BaseService<SysDeptMapper, SysDept> {
         return super.findList(sysDept);
     }
 
-    /**
-     * 查询出所有一级部门
-     * @return
-     */
-    public List<SysDept> findParentList(){
-        List<SysDept> parentList = super.mapper.findParentList();
-        return parentList;
-    }
 
     /**
      *
-     * @param deptId   部门id
+     * @param sysUser   部门id
      * @return      该部门所有成员
      */
-    public List<SysUser> findDeptUserByDeptId(Long deptId){
+    public List<SysUser> findDeptUserByDeptId(SysUser sysUser){
         //通过部门id查处该部门
-        SysDept sysDept = get(deptId.toString());
+        SysDept sysDept = get(sysUser.getDeptId());
         //判断该部门是几级部门
         String deptLevel = sysDept.getDeptLevel();
 
-        SysUser sysUser = new SysUser();
         // deptLevel 0全公司的员工 ， 1 分公司的全部员工   2，分公司部门的员工
         if(deptLevel.equals("0")){
-            PageInfo<SysUser> page = sysUserService.findPage(new SysUser());
+            sysUser.setDeptId("");
+            PageInfo<SysUser> page = sysUserService.findPage(sysUser);
             List<SysUser> list = page.getList();
             return list;
         }else if(deptLevel.equals("1")){
-            List<SysDept> sysDepts = findDeptByparentId(sysDept.getDeptId());
-            ArrayList<SysUser> sysUsers = new ArrayList<>();
-            for (SysDept dept : sysDepts) {
-                sysUser.setDeptId(dept.getDeptId().toString());
-                List<SysUser> list = sysUserMapper.findList(sysUser);
-                sysUsers.addAll(list);
-                return sysUsers;
-            }
+            Long deptId = sysDept.getDeptId();
+
+            PageInfo<SysUser> page = sysUserService.findPage(sysUser);
+
+
+
         }else if(deptLevel.equals("2")){
-            sysUser.setDeptId(deptId.toString());
-            return sysUserMapper.findList(sysUser);
+
         }
 
         return null;
     }
 
-    /**
-     *
-     * @param parentId  父级部门id
-     * @return            所有该父级部门的所有部门
-     */
-    public List<SysDept> findDeptByparentId(Long parentId){
-        SysDept sysDept = new SysDept();
-        sysDept.setParentId(parentId);
-        List<SysDept> list = super.mapper.findList(sysDept);
-        return list;
+    public PageInfo<SysDept> findByDeptChildren(){
+        return null;
     }
+
 
     /**
      * 分页查询

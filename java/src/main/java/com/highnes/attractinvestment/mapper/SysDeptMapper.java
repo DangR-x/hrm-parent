@@ -15,7 +15,7 @@ import java.util.List;
 @Mapper
 public interface SysDeptMapper extends BaseMapper<SysDept> {
 
-    List<SysDept> findParentList();
+
 
 
 }

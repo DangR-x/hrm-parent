@@ -4,7 +4,9 @@ import java.util.List;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.highnes.attractinvestment.common.utils.StringUtils;
+import com.highnes.attractinvestment.entity.SysDept;
 import com.highnes.attractinvestment.entity.SysUser;
+import com.highnes.attractinvestment.mapper.SysDeptMapper;
 import com.highnes.attractinvestment.mapper.SysUserMapper;
 import com.highnes.attractinvestment.service.BaseService;
 import com.highnes.attractinvestment.entity.ProjectInfo;
@@ -37,7 +39,7 @@ public class ProjectInfoServiceImpl extends BaseService<ProjectInfoMapper, Proje
     private SysUserServiceImpl sysUserService;
 
     @Autowired
-    private SysDeptServiceImpl sysDeptService;
+    private SysDeptMapper sysDeptMapper;
 
         /**
      * 根据ID获取信息
@@ -72,8 +74,9 @@ public class ProjectInfoServiceImpl extends BaseService<ProjectInfoMapper, Proje
             projectInfo.setStatus("3");
         }
         if(StringUtils.isNotBlank(projectInfo.getCreateBy())){
-
-            findPageByCreateId(projectInfo.getCreateBy());
+            SysUser sysUser = new SysUser();
+            sysUser.setUserId(projectInfo.getCreateBy());
+            PageInfo<ProjectInfo> pageByCreateId = findPageByCreateId(sysUser);
 
         }
         return super.findPage(projectInfo);
@@ -81,16 +84,18 @@ public class ProjectInfoServiceImpl extends BaseService<ProjectInfoMapper, Proje
 
     /**
      *
-     * @param CreateById  项目管理员id
+     * @param
      * @return          该管理员所在部门的所有项目
      */
     @Transactional(readOnly = false)
-    public PageInfo<ProjectInfo> findPageByCreateId(String CreateById){
-        SysUser sysUser = sysUserService.get(CreateById);
-        List<SysUser> deptUserByDeptId = sysDeptService.findDeptUserByDeptId(Long.valueOf(sysUser.getDeptId()));
+    public PageInfo<ProjectInfo> findPageByCreateId(SysUser sysUser){
+
+        sysDeptMapper.findList(sysDeptId)
+
+
         String ids= null;
         //通过userids查询该项目
-        List<ProjectInfo> userIds = super.mapper.findPageByUserIds(ids);
+        List<ProjectInfo> userIds = super.mapper.findPageByUserIds(Ids);
         return null;
     }
 

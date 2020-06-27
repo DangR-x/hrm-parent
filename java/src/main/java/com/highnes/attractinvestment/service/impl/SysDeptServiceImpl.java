@@ -1,5 +1,6 @@
 package com.highnes.attractinvestment.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.highnes.attractinvestment.entity.BaseEntity;
 import com.highnes.attractinvestment.entity.SysDept;
@@ -29,11 +30,12 @@ public class SysDeptServiceImpl extends BaseService<SysDeptMapper, SysDept> {
 
 
     private Logger logger = Logger.getLogger(SysDeptServiceImpl.class);
-    @Autowired
-    private SysUserMapper sysUserMapper;
 
     @Autowired
     private SysUserServiceImpl sysUserService;
+
+    @Autowired
+    private SysDeptMapper sysDeptMapper;
 
         /**
      * 根据ID获取信息
@@ -59,37 +61,55 @@ public class SysDeptServiceImpl extends BaseService<SysDeptMapper, SysDept> {
 
     /**
      *
-     * @param sysUser   部门id
+     * @param sysDept   部门id
      * @return      该部门所有成员
      */
-    public List<SysUser> findDeptUserByDeptId(SysUser sysUser){
-        //通过部门id查处该部门
-        SysDept sysDept = get(sysUser.getDeptId());
+    public List<SysUser> findDeptUserByDeptId(SysDept sysDept){
+//        //通过部门id查处该部门
+//        SysDept sysDept1 = get(sysDept.getDeptId().toString());
         //判断该部门是几级部门
         String deptLevel = sysDept.getDeptLevel();
-
+        SysDept sysDeptparent = new SysDept();
         // deptLevel 0全公司的员工 ， 1 分公司的全部员工   2，分公司部门的员工
         if(deptLevel.equals("0")){
+            SysUser sysUser = new SysUser();
             sysUser.setDeptId("");
+            sysUser.setPageNo(sysDept.getPageNo());
+            sysUser.setPageSize(sysDept.getPageSize());
             PageInfo<SysUser> page = sysUserService.findPage(sysUser);
             List<SysUser> list = page.getList();
             return list;
         }else if(deptLevel.equals("1")){
-            Long deptId = sysDept.getDeptId();
-
-            PageInfo<SysUser> page = sysUserService.findPage(sysUser);
-
-
+            sysDeptparent.setParentId(sysDept.getDeptId());
+            sysDeptparent.setPageNo(sysDept.getPageNo());
+            sysDeptparent.setPageSize(sysDept.getPageSize());
+            List<SysUser> deptChildrenByDeptId = findDeptChildrenByDeptId(sysDeptparent);
+            return deptChildrenByDeptId;
 
         }else if(deptLevel.equals("2")){
-
+            sysDeptparent.setParentId(sysDept.getParentId());
+            sysDeptparent.setPageNo(sysDept.getPageNo());
+            sysDeptparent.setPageSize(sysDept.getPageSize());
+            List<SysUser> deptChildrenByDeptId = findDeptChildrenByDeptId(sysDeptparent);
+            return deptChildrenByDeptId;
         }
-
         return null;
     }
 
-    public PageInfo<SysDept> findByDeptChildren(){
-        return null;
+    /**
+     *
+     * @param sysDeptId
+     * @return List<SysUser>
+     */
+    public List<SysUser> findDeptChildrenByDeptId(SysDept sysDeptId){
+
+        List<SysDept> list = sysDeptMapper.findList(sysDeptId);
+        ArrayList<Long> depIds = new ArrayList();
+        for (SysDept dept : list) {
+            depIds.add(dept.getDeptId());
+        }
+        PageInfo<SysUser> userByDeptIds = sysUserService.findUserByDeptIds(depIds, sysDeptId.getPageNo(), sysDeptId.getPageSize());
+        return userByDeptIds.getList();
     }
 
 

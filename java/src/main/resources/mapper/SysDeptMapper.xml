@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.highnes.attractinvestment.mapper.SysDeptMapper">
-    <resultMap id="BaseResultMap" type="SysDept">
+    <resultMap id="BaseResultMap" type="com.highnes.attractinvestment.entity.SysDept">
         <id column="dept_id" jdbcType="BIGINT" property="deptId" />
         <result column="parent_id" jdbcType="BIGINT" property="parentId" />
         <result column="ancestors" jdbcType="VARCHAR" property="ancestors" />
@@ -38,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <sql id="sysDeptLeftJoin">
+
     </sql>
 
 
@@ -48,6 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         sys_dept a
         <include refid="sysDeptLeftJoin"/>
         WHERE a.dept_id = #{id}
+        and a.del_flag = #{DEL_FLAG_NORMAL}
     </select>
 
     <select id="findList" resultType="SysDept">

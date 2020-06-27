@@ -5,7 +5,7 @@
 <mapper namespace="com.highnes.attractinvestment.mapper.ProjectInfoMapper">
 
     <sql id="projectInfoColumns">
-        a.id AS "id",
+            a.id AS "id",
             a.title AS "title",
             a.classify_type AS "classifyType",
             a.classify_type_two AS "classifyTypeTwo",
@@ -50,7 +50,13 @@
     </sql>
 
     <select id="findPageByUserIds" resultType="ProjectInfo">
-        <include refid="projectInfoColumns"/> from project_info a where a.create_by in ( #{IDs} )
+        SELECT
+        <include refid="projectInfoColumns"/>
+        from project_info a
+        where a.create_by in
+        <foreach collection="Ids" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
     <select id="get" resultType="ProjectInfo">

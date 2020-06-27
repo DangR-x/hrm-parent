@@ -3,6 +3,7 @@ package com.highnes.attractinvestment.mapper;
 import com.highnes.attractinvestment.mapper.BaseMapper;
 import com.highnes.attractinvestment.entity.ProjectInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,6 +17,6 @@ import java.util.List;
 public interface ProjectInfoMapper extends BaseMapper<ProjectInfo> {
 
 
-    List<ProjectInfo> findPageByUserIds(String IDs);
+    List<ProjectInfo> findPageByUserIds(@Param("Ids") List<String> Ids);
 
 }

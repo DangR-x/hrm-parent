@@ -1,5 +1,6 @@
 package com.highnes.attractinvestment.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.highnes.attractinvestment.common.utils.EncryptUtil;
 import com.highnes.attractinvestment.common.utils.LoginUtils;
@@ -35,6 +36,19 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> {
     private SysUserRoleMapper sysUserRoleMapper;
     @Autowired
     private SysRoleMenuMapper sysRoleMenuMapper;
+    @Autowired
+    private SysUserMapper sysUserMapper;
+
+    /**
+     * 通过多个部门id查出员工
+     * @param DeptIds
+     * @return
+     */
+    public PageInfo<SysUser> findUserByDeptIds(List<Long> DeptIds,Integer pageNo,Integer pageSize){
+        PageHelper.startPage(pageNo, pageSize);
+        List<SysUser> userByDeptIds = sysUserMapper.findUserByDeptIds(DeptIds);
+        return new PageInfo(userByDeptIds);
+    }
 
     /**
      * 根据ID获取信息

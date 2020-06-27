@@ -1,5 +1,6 @@
 package com.highnes.attractinvestment.controller;
 
+import com.highnes.attractinvestment.common.utils.StringUtils;
 import com.highnes.attractinvestment.domain.ResultMessage;
 import com.highnes.attractinvestment.entity.SysDept;
 import com.highnes.attractinvestment.entity.SysUser;
@@ -67,14 +68,48 @@ public class SysDeptController extends BaseController {
 
     /**
      *
-     * @param deptId   部门id
+     * @param
      * @return     返回该部门所有员工
      */
     @RequestMapping(value = "getDepUser" , method = RequestMethod.POST)
     @ApiOperation(notes = "getDepUser",value = "部门所有员工")
-    public List<SysUser> getDepUser(@RequestBody SysUser sysUser){
-        List<SysUser> deptUserByDeptId = sysDeptService.findDeptUserByDeptId(sysUser);
-        return deptUserByDeptId;
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNo", value = "页数", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页多少行", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "deptid", value = "部门id", required = false, dataType = "String", paramType = "query"),
+    })
+    public ResultMessage getDepUser(@RequestBody SysDept sysDept){
+        List<SysUser> deptUserByDeptId = null;
+        try {
+            deptUserByDeptId = sysDeptService.findDeptUserByDeptId(sysDept);
+            if(deptUserByDeptId==null){
+                return ResultMessage.error("新建部门，亟待新员工加入！");
+            }
+            return ResultMessage.success(deptUserByDeptId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultMessage.error("部门选择错误！");
+        }
+    }
+
+    /**
+     * 查找单位
+     * @param deptId
+     * @return
+     */
+    @RequestMapping(value = "getone", method = RequestMethod.GET)
+    @ApiOperation(notes = "deleteDept", value = "查找部门信息")
+    public ResultMessage getone(Long deptId){
+        try {
+            SysDept sysDept = sysDeptService.get(deptId.toString());
+            if(StringUtils.isEmpty(sysDept.getDeptName())){
+                return ResultMessage.error("找不到该部门");
+            }
+            return ResultMessage.success(sysDept);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultMessage.error("查找部门错误！");
+        }
     }
 
 

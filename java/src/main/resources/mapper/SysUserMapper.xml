@@ -30,6 +30,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <sql id="sysUserLeftJoin">
     </sql>
 
+    <select id="findUserByDeptIds" resultType="SysUser">
+        Select
+        <include refid="sysUserColumns"/>
+        from
+        sys_user a
+        where a.dept_id in
+        <foreach collection="DeptIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and a.del_flag = 0
+    </select>
+
     <select id="get" resultType="SysUser">
         SELECT
         <include refid="sysUserColumns"/>

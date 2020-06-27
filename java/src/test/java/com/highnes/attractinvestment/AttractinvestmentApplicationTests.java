@@ -1,14 +1,36 @@
 package com.highnes.attractinvestment;
 
 
+import com.highnes.attractinvestment.entity.SysDept;
+import com.highnes.attractinvestment.entity.SysUser;
+import com.highnes.attractinvestment.service.impl.SysDeptServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class AttractinvestmentApplicationTests {
+
+
+    @Autowired
+    private SysDeptServiceImpl sysDeptService;
+
+    @Test
+    void test01() {
+        SysDept sysDept = new SysDept();
+        sysDept.setDeptId(100L);
+        sysDept.setDeptLevel("0");
+
+        List<SysUser> deptUserByDeptId = sysDeptService.findDeptUserByDeptId(sysDept);
+        for (SysUser s : deptUserByDeptId) {
+            System.out.println(s);
+        }
+    }
 
 
     @Test

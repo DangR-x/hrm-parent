@@ -4,6 +4,7 @@ import com.highnes.attractinvestment.domain.SysUserRequest;
 import com.highnes.attractinvestment.mapper.BaseMapper;
 import com.highnes.attractinvestment.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
@@ -30,4 +31,11 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return
      */
     SysUser getUserByLoginName(SysUser sysUser);
+
+    /**
+     * 通过多个部门id查出员工
+     * @param DeptIds
+     * @return
+     */
+    List<SysUser> findUserByDeptIds(@Param("DeptIds") List<Long> DeptIds);
 }

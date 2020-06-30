@@ -1,8 +1,6 @@
 package com.highnes.attractinvestment.domain;
 
-import com.highnes.attractinvestment.entity.SysMenu;
-import com.highnes.attractinvestment.entity.SysRole;
-import com.highnes.attractinvestment.entity.SysRoleMenu;
+import com.highnes.attractinvestment.entity.*;
 
 import java.util.List;
 
@@ -31,9 +29,37 @@ public class SysRoleRequest extends SysRole {
     private String roleNum;
 
     /**
+     * 角色信息
+     */
+    private Role role;
+
+    /**
      * 角色菜单权限
      */
     private List<SysRoleMenu> menuList;
+
+    /**
+     * 权限
+     */
+    private List<Permission> permissions;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    @Override
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    @Override
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
+    }
 
     public List<SysRoleMenu> getMenuList() {
         return menuList;

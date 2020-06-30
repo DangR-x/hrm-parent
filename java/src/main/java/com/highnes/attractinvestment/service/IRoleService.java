@@ -1,24 +1,27 @@
-package com.highnes.attractinvestment.mapper;
+package com.highnes.attractinvestment.service;
 
+import com.highnes.attractinvestment.domain.SysRoleRequest;
 import com.highnes.attractinvestment.entity.Role;
-import com.highnes.attractinvestment.entity.RolePermission;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author Rain
- * @date 2020/6/30
- * @description
+ * @author DangR-X
+ * @version 1.0
+ * @date 2020/6/30 22:27
+ * @Description
+ * 角色
+ *
  */
-@Component
-public interface RoleMapper {
+public interface IRoleService {
 
     /**
      *  通过userID获取用户权限和角色信息
      */
     Role findRolePermissionByUserId(String userId);
+
+    void saveRoleInfo(SysRoleRequest sysRoleRequest);
 
     int insert(Role role);
 
@@ -27,5 +30,4 @@ public interface RoleMapper {
     void update(Role role);
 
     List<Role> selectAll();
-
 }

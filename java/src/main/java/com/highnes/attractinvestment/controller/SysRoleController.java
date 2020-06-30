@@ -7,8 +7,11 @@ import com.highnes.attractinvestment.domain.SysRoleRequest;
 import com.highnes.attractinvestment.domain.SysUserResult;
 import com.highnes.attractinvestment.entity.BaseEntity;
 import com.highnes.attractinvestment.entity.SysRole;
+import com.highnes.attractinvestment.service.IRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import net.bytebuddy.asm.Advice;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -25,9 +28,11 @@ import java.util.Date;
 @Api(tags = "系统角色接口")
 public class SysRoleController extends BaseController {
 
+    @Autowired
+    private IRoleService roleService;
 
     /**
-     * 删除用户信息
+     * 新增角色
      * @param sysRoleRequest
      * @return
      */
@@ -40,7 +45,8 @@ public class SysRoleController extends BaseController {
             sysRoleRequest.setCreateBy(sysUserResult.getUserName());
             sysRoleRequest.setCreateDate(new Date());
             sysRoleRequest.setDelFlag(BaseEntity.DEL_FLAG_NORMAL);
-            sysRoleService.saveRoleInfo(sysRoleRequest);
+            roleService.saveRoleInfo(sysRoleRequest);
+            //sysRoleService.saveRoleInfo(sysRoleRequest);
             return ResultMessage.success("新增角色成功!");
         }catch (Exception e){
             e.printStackTrace();
@@ -76,7 +82,7 @@ public class SysRoleController extends BaseController {
     }
 
     /**
-     * 删除用户信息
+     * 查询角色
      * @param sysRoleRequest
      * @return
      */

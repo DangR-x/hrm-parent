@@ -52,7 +52,9 @@ class AttractinvestmentApplicationTests {
     void test08() {
         Role rolePermissionByUserId = roleMapper.findRolePermissionByUserId("1");
 
-        System.out.println(rolePermissionByUserId);
+        for (Permission permission : rolePermissionByUserId.getPermissions()) {
+            System.out.println(permission);
+        }
     }
     @Test
     void test07() {

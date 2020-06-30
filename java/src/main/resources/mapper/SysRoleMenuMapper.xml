@@ -5,9 +5,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.highnes.attractinvestment.mapper.SysRoleMenuMapper">
     
     <sql id="sysRoleMenuColumns">
-    a.role_id AS "roleId",
+        a.role_id AS "roleId",
         a.menu_id AS "menuId",
-        a.rights AS "rights"        </sql>
+        a.rights AS "rights"
+    </sql>
 
     <sql id="sysRoleMenuLeftJoin">
     </sql>

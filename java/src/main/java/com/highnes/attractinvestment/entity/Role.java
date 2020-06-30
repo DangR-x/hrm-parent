@@ -37,6 +37,7 @@ public class Role implements Serializable {
     //备注
     private String remark;
 
+
     private List<Permission> permissions;
 
     public List<Permission> getPermissions() {
@@ -141,5 +142,24 @@ public class Role implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
+                ", roleKey='" + roleKey + '\'' +
+                ", roleSort=" + roleSort +
+                ", dataScope='" + dataScope + '\'' +
+                ", status='" + status + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                ", createBy='" + createBy + '\'' +
+                ", createDate=" + createDate +
+                ", updateBy='" + updateBy + '\'' +
+                ", updateDate=" + updateDate +
+                ", remark='" + remark + '\'' +
+                ", permissions=" + permissions +
+                '}';
     }
 }

@@ -5,11 +5,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.highnes.attractinvestment.mapper.ProjectAreaDetailsMapper">
     
     <sql id="projectAreaDetailsColumns">
-    a.id AS "id",
+        a.id AS "id",
         a.project_id AS "projectId",
         a.area_type AS "areaType",
         a.area_count AS "areaCount",
-        a.del_flag AS "delFlag"        </sql>
+        a.del_flag AS "delFlag",
+        a.contain AS "contain"
+    </sql>
 
     <sql id="projectAreaDetailsLeftJoin">
     </sql>
@@ -31,9 +33,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="projectAreaDetailsLeftJoin"/>
         <where>
             a.del_flag = #{DEL_FLAG_NORMAL}
-                                    <if test="projectId != null  and projectId != ''"> and a.project_id = #{projectId}</if>
-                                    <if test="areaType != null  and areaType != ''"> and a.area_type = #{areaType}</if>
-                            </where>
+            <if test="projectId != null  and projectId != ''"> and a.project_id = #{projectId}</if>
+            <if test="areaType != null  and areaType != ''"> and a.area_type = #{areaType}</if>
+        </where>
     </select>
 
 
@@ -45,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="areaType != null  and areaType != ''">area_type,</if>
             <if test="areaCount != null  and areaCount != ''">area_count,</if>
             <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+            <if test="contain != null  and contain != ''">contain,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null  and id != ''">#{id},</if>
@@ -52,6 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="areaType != null  and areaType != ''">#{areaType},</if>
             <if test="areaCount != null  and areaCount != ''">#{areaCount},</if>
             <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+            <if test="contain != null  and contain != ''">#{contain},</if>
          </trim>
     </insert>
 
@@ -62,6 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="areaType != null  and areaType != ''">area_type = #{areaType},</if>
             <if test="areaCount != null  and areaCount != ''">area_count = #{areaCount},</if>
             <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="contain != null  and contain != ''">contain = #{contain},</if>
         </trim>
         where id = #{id}
     </update>

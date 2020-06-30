@@ -49,6 +49,8 @@ public class ProjectController extends BaseController {
     @Login
     public ResultMessage createProject(){
         ProjectInfo projectInfo = new ProjectInfo();
+        String code = "SPB"+DateUtils.parseDateToStr("yyyyMMdd", new Date())+new Random().nextInt(1000000);
+        projectInfo.setCode(code);
         projectInfoService.save(projectInfo);
         return ResultMessage.success(projectInfo);
     }
@@ -87,7 +89,7 @@ public class ProjectController extends BaseController {
             @ApiImplicitParam(name = "transferFlag", value = "是否投促项目：0-否，1-是", required = false, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "createBy", value = "项目创建人id", required = false, dataType = "string", paramType = "query"),
     })
-    @Login
+    //@Login
     public ResultMessage queryProjectPage(Integer pageNo, Integer pageSize, String projectName, String projectCode, String status,
                                           String urgeFlag, String urgeType, String stepStatus, String classifyType, String classifyTypeTwo, String itemType,
                                           String startCast, String endCast, String sourceType, String groupId, String companyName, String companyCode, String companyUser,
@@ -218,10 +220,10 @@ public class ProjectController extends BaseController {
         projectInfo.setTitle(projectInfoRequest.getTitle());
 
         String code = projectInfoRequest.getCode();
-        if (StringUtils.isBlank(projectInfoRequest.getCode())){
-            // 项目编号：SPB+当前日期+6位随机数
-            code = "SPB"+DateUtils.parseDateToStr("yyyyMMdd", new Date())+new Random().nextInt(1000000);
-        }
+//        if (StringUtils.isBlank(projectInfoRequest.getCode())){
+//            // 项目编号：SPB+当前日期+6位随机数
+//            code = "SPB"+DateUtils.parseDateToStr("yyyyMMdd", new Date())+new Random().nextInt(1000000);
+//        }
         // 项目编号
         projectInfo.setCode(code);
 

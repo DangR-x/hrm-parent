@@ -42,17 +42,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
 
-    <select id="get" resultType="SysDept">
+    <select id="get" resultType="com.highnes.attractinvestment.entity.SysDept">
         SELECT
         <include refid="sysDeptColumns"/>
         FROM
         sys_dept a
         <include refid="sysDeptLeftJoin"/>
         WHERE a.dept_id = #{id}
-        and a.del_flag = #{DEL_FLAG_NORMAL}
+        and a.del_flag = 0
     </select>
 
-    <select id="findList" resultType="SysDept">
+    <select id="findList" resultType="com.highnes.attractinvestment.entity.SysDept">
         SELECT
         <include refid="sysDeptColumns"/>
         FROM
@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 
-    <insert id="insert" parameterType="SysDept" useGeneratedKeys="true" keyProperty="deptId">
+    <insert id="insert" parameterType="com.highnes.attractinvestment.entity.SysDept" useGeneratedKeys="true" keyProperty="deptId">
         insert into sys_dept
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="parentId != null ">parent_id,</if>
@@ -83,6 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null ">create_time,</if>
             <if test="updateBy != null  and updateBy != ''">update_by,</if>
             <if test="updateTime != null ">update_time,</if>
+            <if test="deptLevel != null ">dept_level,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="parentId != null ">#{parentId},</if>
@@ -98,10 +99,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null ">#{createTime},</if>
             <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
             <if test="updateTime != null ">#{updateTime},</if>
+            <if test="deptLevel != null ">#{deptLevel},</if>
          </trim>
     </insert>
 
-    <update id="update" parameterType="SysDept">
+    <update id="update" parameterType="com.highnes.attractinvestment.entity.SysDept">
         update sys_dept
         <trim prefix="SET" suffixOverrides=",">
             <if test="parentId != null ">parent_id = #{parentId},</if>
@@ -117,12 +119,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null ">create_time = #{createTime},</if>
             <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
             <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="deptLevel != null ">dept_level = #{deptLevel},</if>
         </trim>
         where dept_id = #{deptId}
     </update>
 
-    <delete id="delete" parameterType="Long">
-        update sys_dept set del_flag = #{DEL_FLAG_DELETE} where dept_id = #{deptId} and parent_id = #{parentId}
+    <delete id="delete" parameterType="com.highnes.attractinvestment.entity.SysDept">
+        update sys_dept set del_flag = #{DEL_FLAG_DELETE} where dept_id = #{deptId}
     </delete>
 
 </mapper>

@@ -5,7 +5,7 @@
 <mapper namespace="com.highnes.attractinvestment.mapper.ProjectCompanyInfoMapper">
 
     <sql id="projectCompanyInfoColumns">
-    a.id AS "id",
+        a.id AS "id",
         a.project_id AS "projectId",
         a.company_name AS "companyName",
         a.company_code AS "companyCode",
@@ -20,7 +20,9 @@
         a.company_legal_person AS "companyLegalPerson",
         a.company_mobile AS "companyMobile",
         a.company_license AS "companyLicense",
-        a.del_flag AS "delFlag"        </sql>
+        a.del_flag AS "delFlag",
+        a.industry AS "industry"
+    </sql>
 
     <sql id="projectCompanyInfoLeftJoin">
     </sql>
@@ -72,6 +74,7 @@
             <if test="companyMobile != null  and companyMobile != ''">company_mobile,</if>
             <if test="companyLicense != null  and companyLicense != ''">company_license,</if>
             <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+            <if test="industry != null  and industry != ''">industry,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null  and id != ''">#{id},</if>
@@ -90,6 +93,7 @@
             <if test="companyMobile != null  and companyMobile != ''">#{companyMobile},</if>
             <if test="companyLicense != null  and companyLicense != ''">#{companyLicense},</if>
             <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+            <if test="industry != null  and industry != ''">#{industry},</if>
         </trim>
     </insert>
 
@@ -115,6 +119,7 @@
             <if test="companyMobile != null  and companyMobile != ''">company_mobile = #{companyMobile},</if>
             <if test="companyLicense != null  and companyLicense != ''">company_license = #{companyLicense},</if>
             <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="industry != null  and industry != ''">industry = #{industry},</if>
         </trim>
         where id = #{id}
     </update>

@@ -34,6 +34,10 @@ public class SysRoleMenu extends BaseEntity<SysRoleMenu> {
      */
     private String menuUrl;
 
+    /**
+     * 菜单的父级元素
+     */
+    private String parentId;
 
     public SysRoleMenu(){
         super();
@@ -41,6 +45,14 @@ public class SysRoleMenu extends BaseEntity<SysRoleMenu> {
 
     public SysRoleMenu(String id){
         super(id);
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public void setRoleId(String roleId) {

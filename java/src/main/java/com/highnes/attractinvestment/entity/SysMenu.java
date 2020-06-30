@@ -1,6 +1,8 @@
 package com.highnes.attractinvestment.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 菜单权限对象 sys_menu
@@ -65,6 +67,11 @@ public class SysMenu extends BaseEntity<SysMenu> {
      */
     private String remark;
 
+    /**
+     * 子菜单
+     */
+    private List<SysMenu> children=new ArrayList<>();
+
 
     public SysMenu(){
         super();
@@ -72,6 +79,14 @@ public class SysMenu extends BaseEntity<SysMenu> {
 
     public SysMenu(String id){
         super(id);
+    }
+
+    public List<SysMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SysMenu> children) {
+        this.children = children;
     }
 
     public void setMenuId(String menuId) {

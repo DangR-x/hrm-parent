@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -13,7 +15,9 @@ import redis.clients.jedis.JedisPoolConfig;
  * @Date 2020年3月9日
  * @Description
  */
-@Configuration
+//@Configuration
+@Component
+@Order(1)
 public class RedisConfig {
 
     private Logger logger = LoggerFactory.getLogger(RedisConfig.class);

@@ -70,9 +70,9 @@ public class ProjectInfoServiceImpl extends BaseService<ProjectInfoMapper, Proje
     @Override
     @Transactional(readOnly = false)
     public PageInfo<ProjectInfo> findPage(ProjectInfo projectInfo){
-        if(projectInfo.getItemType()!=null){
-            projectInfo.setStatus("3");
-        }
+//        if(projectInfo.getItemType()!=null){
+//            projectInfo.setStatus("3");
+//        }
         if(StringUtils.isNotBlank(projectInfo.getCreateBy())){
             SysUser sysUser = new SysUser();
             sysUser.setUserId(projectInfo.getCreateBy());
@@ -90,12 +90,12 @@ public class ProjectInfoServiceImpl extends BaseService<ProjectInfoMapper, Proje
     @Transactional(readOnly = false)
     public PageInfo<ProjectInfo> findPageByCreateId(SysUser sysUser){
 
-        sysDeptMapper.findList(sysDeptId)
+        //sysDeptMapper.findList(sysDeptId)
 
 
         String ids= null;
         //通过userids查询该项目
-        List<ProjectInfo> userIds = super.mapper.findPageByUserIds(Ids);
+       // List<ProjectInfo> userIds = super.mapper.findPageByUserIds(Ids);
         return null;
     }
 

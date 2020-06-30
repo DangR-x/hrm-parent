@@ -14,33 +14,43 @@ import java.util.Map;
  */
 public class SysUserResult extends SysUser {
 
-    private List<SysRole> roleList;
+    private SysRole role;
 
-    private List<SysDept> deptList;
+    private SysDept dept;
 
-    private List<SysRoleMenu> menuList;
+    private List<SysMenu> menuList;
 
-    public List<SysRole> getRoleList() {
-        return roleList;
+    private List<Permission> permissions;
+
+    public List<Permission> getPermissions() {
+        return permissions;
     }
 
-    public void setRoleList(List<SysRole> roleList) {
-        this.roleList = roleList;
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
     }
 
-    public List<SysDept> getDeptList() {
-        return deptList;
+    public SysRole getRole() {
+        return role;
     }
 
-    public void setDeptList(List<SysDept> deptList) {
-        this.deptList = deptList;
+    public void setRole(SysRole role) {
+        this.role = role;
     }
 
-    public List<SysRoleMenu> getMenuList() {
+    public List<SysMenu> getMenuList() {
         return menuList;
     }
 
-    public void setMenuList(List<SysRoleMenu> menuList) {
+    public void setMenuList(List<SysMenu> menuList) {
         this.menuList = menuList;
+    }
+
+    public SysDept getDept() {
+        return dept;
+    }
+
+    public void setDept(SysDept dept) {
+        this.dept = dept;
     }
 }

@@ -30,6 +30,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <sql id="sysUserLeftJoin">
     </sql>
 
+    <select id="getPermissionsByUserId" resultMap="com.highnes.attractinvestment.mapper.PermissionMapper.BaseResultMap">
+        select * from
+        sys_user_role sur
+        left join sys_role_permission_relation srp on sur.role_id = srp.role_id
+        left join sys_permission sp on sp.id = srp.permission_id
+        where sur.user_id=#{userId}
+    </select>
+
     <select id="findUserByDeptIds" resultType="SysUser">
         Select
         <include refid="sysUserColumns"/>

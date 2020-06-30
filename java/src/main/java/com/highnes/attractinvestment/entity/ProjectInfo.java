@@ -106,6 +106,11 @@ public class ProjectInfo extends BaseEntity<ProjectInfo> {
     private Date openTime;
 
     /**
+     * 是否开工 0已开工 1未开工
+     */
+    private Integer productstart;
+
+    /**
      * 计划投产时间
      */
     private Date productionTime;
@@ -183,6 +188,14 @@ public class ProjectInfo extends BaseEntity<ProjectInfo> {
 
     public void setProjectInvestors(List<ProjectInvestor> projectInvestors) {
         this.projectInvestors = projectInvestors;
+    }
+
+    public Integer getProductstart() {
+        return productstart;
+    }
+
+    public void setProductstart(Integer productstart) {
+        this.productstart = productstart;
     }
 
     public void setTitle(String title) {

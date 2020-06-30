@@ -82,7 +82,7 @@ public class SysRoleController extends BaseController {
      */
     @Login
     @RequestMapping(value = "select", method = RequestMethod.POST)
-    @ApiOperation(notes = "select", value = "新增角色")
+    @ApiOperation(notes = "select", value = "查询角色")
     public Object select(@RequestBody SysRoleRequest sysRoleRequest){
         try{
             return ResultMessage.success(sysRoleService.selRoleInfoList(sysRoleRequest));

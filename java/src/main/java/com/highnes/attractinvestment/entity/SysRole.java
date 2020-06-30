@@ -3,6 +3,7 @@ package com.highnes.attractinvestment.entity;
 import io.swagger.models.auth.In;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 角色信息对象 sys_role
@@ -57,6 +58,15 @@ public class SysRole extends BaseEntity<SysRole> {
      */
     private String remark;
 
+    private List<Permission> permissions;
+
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
+    }
 
     public SysRole(){
         super();

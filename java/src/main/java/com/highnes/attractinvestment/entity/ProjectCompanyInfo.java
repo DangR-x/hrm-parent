@@ -35,6 +35,11 @@ public class ProjectCompanyInfo extends BaseEntity<ProjectCompanyInfo> {
     private String classifyTypeTwo;
 
     /**
+     * 行业小组
+     */
+    private Long industry;
+
+    /**
      * 企业注册地
      */
     private String registerAddress;
@@ -86,6 +91,14 @@ public class ProjectCompanyInfo extends BaseEntity<ProjectCompanyInfo> {
 
     public ProjectCompanyInfo(String id){
         super(id);
+    }
+
+    public Long getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(Long industry) {
+        this.industry = industry;
     }
 
     public void setProjectId(String projectId) {

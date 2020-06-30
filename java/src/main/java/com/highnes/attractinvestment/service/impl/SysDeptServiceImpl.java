@@ -37,41 +37,42 @@ public class SysDeptServiceImpl extends BaseService<SysDeptMapper, SysDept> {
     @Autowired
     private SysDeptMapper sysDeptMapper;
 
-        /**
+    /**
      * 根据ID获取信息
+     *
      * @param id
      * @return
      */
     @Override
-    public SysDept get(String id){
+    public SysDept get(String id) {
         return super.get(id);
     }
 
 
     /**
      * 查询列表
+     *
      * @param sysDept
      * @return
      */
     @Override
-    public List<SysDept> findList(SysDept sysDept){
+    public List<SysDept> findList(SysDept sysDept) {
         return super.findList(sysDept);
     }
 
 
     /**
-     *
-     * @param sysDept   部门id
-     * @return      该部门所有成员
+     * @param sysDept 部门id
+     * @return 该部门所有成员
      */
-    public List<SysUser> findDeptUserByDeptId(SysDept sysDept){
+    public List<SysUser> findDeptUserByDeptId(SysDept sysDept) {
 //        //通过部门id查处该部门
 //        SysDept sysDept1 = get(sysDept.getDeptId().toString());
         //判断该部门是几级部门
         String deptLevel = sysDept.getDeptLevel();
         SysDept sysDeptparent = new SysDept();
         // deptLevel 0全公司的员工 ， 1 分公司的全部员工   2，分公司部门的员工
-        if(deptLevel.equals("0")){
+        if (deptLevel.equals("0")) {
             SysUser sysUser = new SysUser();
             sysUser.setDeptId("");
             sysUser.setPageNo(sysDept.getPageNo());
@@ -79,29 +80,31 @@ public class SysDeptServiceImpl extends BaseService<SysDeptMapper, SysDept> {
             PageInfo<SysUser> page = sysUserService.findPage(sysUser);
             List<SysUser> list = page.getList();
             return list;
-        }else if(deptLevel.equals("1")){
+        } else if (deptLevel.equals("1")) {
             sysDeptparent.setParentId(sysDept.getDeptId());
             sysDeptparent.setPageNo(sysDept.getPageNo());
             sysDeptparent.setPageSize(sysDept.getPageSize());
             List<SysUser> deptChildrenByDeptId = findDeptChildrenByDeptId(sysDeptparent);
             return deptChildrenByDeptId;
 
-        }else if(deptLevel.equals("2")){
-            sysDeptparent.setParentId(sysDept.getParentId());
-            sysDeptparent.setPageNo(sysDept.getPageNo());
-            sysDeptparent.setPageSize(sysDept.getPageSize());
-            List<SysUser> deptChildrenByDeptId = findDeptChildrenByDeptId(sysDeptparent);
-            return deptChildrenByDeptId;
+        } else if (deptLevel.equals("2")) {
+//            sysDeptparent.setParentId(sysDept.getParentId());
+//            sysDeptparent.setPageNo(sysDept.getPageNo());
+//            sysDeptparent.setPageSize(sysDept.getPageSize());
+//            List<SysUser> deptChildrenByDeptId = findDeptChildrenByDeptId(sysDeptparent);
+            SysUser sysUser = new SysUser();
+            sysUser.setDeptId(sysDept.getDeptId().toString());
+            PageInfo<SysUser> page = sysUserService.findPage(sysUser);
+            return page.getList();
         }
         return null;
     }
 
     /**
-     *
      * @param sysDeptId
      * @return List<SysUser>
      */
-    public List<SysUser> findDeptChildrenByDeptId(SysDept sysDeptId){
+    public List<SysUser> findDeptChildrenByDeptId(SysDept sysDeptId) {
 
         List<SysDept> list = sysDeptMapper.findList(sysDeptId);
         ArrayList<Long> depIds = new ArrayList();
@@ -115,43 +118,52 @@ public class SysDeptServiceImpl extends BaseService<SysDeptMapper, SysDept> {
 
     /**
      * 分页查询
+     *
      * @param sysDept
      * @return
      */
     @Override
-    public PageInfo<SysDept> findPage(SysDept sysDept){
+    public PageInfo<SysDept> findPage(SysDept sysDept) {
         return super.findPage(sysDept);
     }
 
     /**
      * 保存
+     *
      * @param sysDept
      */
     @Override
     @Transactional(readOnly = false)
-    public void save(SysDept sysDept){
-        super.save(sysDept);
+    public void save(SysDept sysDept) {
+        if (sysDept.getDeptId() != null) {
+            sysDeptMapper.update(sysDept);
+        } else {
+            super.save(sysDept);
+        }
     }
 
     /**
      * 删除
+     *
      * @param sysDept
      */
     @Override
     @Transactional(readOnly = false)
-    public void delete(SysDept sysDept){
+    public void delete(SysDept sysDept) {
+        sysDept.setDelFlag("1");
         super.delete(sysDept);
     }
 
     /**
-    * 批量删除
-    * @param ids
-    * @return
-    */
+     * 批量删除
+     *
+     * @param ids
+     * @return
+     */
     @Transactional(readOnly = false)
-    public int delete(String ids){
-        String [] arr = ids.split(",");
-        for (String s: arr){
+    public int delete(String ids) {
+        String[] arr = ids.split(",");
+        for (String s : arr) {
             delete(new SysDept(s));
         }
         return arr.length;
@@ -159,10 +171,11 @@ public class SysDeptServiceImpl extends BaseService<SysDeptMapper, SysDept> {
 
     /**
      * 得到树形结构
+     *
      * @param sysDepts
      * @return
      */
-    public List<SysDept> getTreeData(List<SysDept> sysDepts){
+    public List<SysDept> getTreeData(List<SysDept> sysDepts) {
         List<SysDept> firstList = sysDepts.stream()
                 .filter((SysDept sysDept) -> BaseEntity.HEAD_OFFICE
                         .equals(sysDept.getDeptLevel()))
@@ -176,7 +189,7 @@ public class SysDeptServiceImpl extends BaseService<SysDeptMapper, SysDept> {
                         .equals(sysDept.getDeptLevel()))
                 .collect(Collectors.toList());
 
-        if (secondList.size() > 0){
+        if (secondList.size() > 0) {
             secondList.forEach(sysDept1 -> {
                 List<SysDept> branchList = thirdList.stream().filter(
                         (SysDept sysDept2) -> sysDept1.getDeptId()
@@ -186,7 +199,7 @@ public class SysDeptServiceImpl extends BaseService<SysDeptMapper, SysDept> {
                 }
             });
         }
-        if (firstList.size() > 0){
+        if (firstList.size() > 0) {
             firstList.forEach(sysDept1 -> {
                 List<SysDept> regionalBranchList = secondList.stream().filter(
                         (SysDept sysDept2) -> sysDept1.getDeptId()

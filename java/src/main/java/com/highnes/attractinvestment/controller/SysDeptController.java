@@ -77,6 +77,7 @@ public class SysDeptController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页数", required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "每页多少行", required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "deptid", value = "部门id", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "deptLevel", value = "部门等级", required = false, dataType = "String", paramType = "query"),
     })
     public ResultMessage getDepUser(@RequestBody SysDept sysDept){
         List<SysUser> deptUserByDeptId = null;
@@ -98,8 +99,9 @@ public class SysDeptController extends BaseController {
      * @return
      */
     @RequestMapping(value = "getone", method = RequestMethod.GET)
-    @ApiOperation(notes = "deleteDept", value = "查找部门信息")
+    @ApiOperation(notes = "getone", value = "查找部门信息")
     public ResultMessage getone(Long deptId){
+        logger.info("deptId="+deptId);
         try {
             SysDept sysDept = sysDeptService.get(deptId.toString());
             if(StringUtils.isEmpty(sysDept.getDeptName())){

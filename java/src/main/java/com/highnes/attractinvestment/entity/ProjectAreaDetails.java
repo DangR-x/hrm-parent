@@ -24,6 +24,11 @@ public class ProjectAreaDetails extends BaseEntity<ProjectAreaDetails> {
      */
     private String areaCount;
 
+    /**
+     * 占地多少
+     */
+    private String contain;
+
 
     public ProjectAreaDetails(){
         super();
@@ -31,6 +36,14 @@ public class ProjectAreaDetails extends BaseEntity<ProjectAreaDetails> {
 
     public ProjectAreaDetails(String id){
         super(id);
+    }
+
+    public String getContain() {
+        return contain;
+    }
+
+    public void setContain(String contain) {
+        this.contain = contain;
     }
 
     public void setProjectId(String projectId) {

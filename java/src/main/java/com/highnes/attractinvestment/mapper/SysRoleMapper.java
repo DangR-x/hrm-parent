@@ -22,4 +22,17 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
      * @return
      */
     List<SysRoleRequest> selRoleInfoList(SysRoleRequest sysRoleRequest);
+
+    /**
+     *
+     * @param userId
+     * @return
+     */
+    SysRole getRoleByUserId(String userId);
+
+    /**
+     *  通过userID获取用户权限和角色信息
+     */
+    SysRole findRolePermissionByUserId(String userId);
+
 }

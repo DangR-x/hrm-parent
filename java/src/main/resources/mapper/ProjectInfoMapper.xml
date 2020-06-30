@@ -40,7 +40,8 @@
             a.industry as "industry",
             a.investortype as "investortype",
             a.companyid as "companyid",
-            a.investorid as "investorid"
+            a.investorid as "investorid",
+            a.productstart as "productstart"
         </sql>
 
     <sql id="projectInfoLeftJoin">
@@ -49,7 +50,7 @@
         </if>
     </sql>
 
-    <select id="findPageByUserIds" resultType="ProjectInfo">
+    <select id="findPageByUserIds" resultType="com.highnes.attractinvestment.entity.ProjectInfo">
         SELECT
         <include refid="projectInfoColumns"/>
         from project_info a
@@ -59,7 +60,7 @@
         </foreach>
     </select>
 
-    <select id="get" resultType="ProjectInfo">
+    <select id="get" resultType="com.highnes.attractinvestment.entity.ProjectInfo">
         SELECT
         <include refid="projectInfoColumns"/>
         FROM
@@ -67,7 +68,7 @@
         WHERE a.id = #{id}
     </select>
 
-    <select id="findList" resultType="ProjectInfo">
+    <select id="findList" resultType="com.highnes.attractinvestment.entity.ProjectInfo">
         SELECT
         <include refid="projectInfoColumns"/>
         FROM
@@ -103,7 +104,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="ProjectInfo">
+    <insert id="insert" parameterType="com.highnes.attractinvestment.entity.ProjectInfo">
         insert into project_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null  and id != ''">id,</if>
@@ -121,6 +122,7 @@
             <if test="totalPeople != null ">total_people,</if>
             <if test="dealTime != null ">deal_time,</if>
             <if test="openTime != null ">open_time,</if>
+            <if test="productstart != null ">productstart,</if>
             <if test="productionTime != null ">production_time,</if>
             <if test="createBy != null  and createBy != ''">create_by,</if>
             <if test="createDate != null ">create_date,</if>
@@ -159,6 +161,7 @@
             <if test="totalPeople != null ">#{totalPeople},</if>
             <if test="dealTime != null ">#{dealTime},</if>
             <if test="openTime != null ">#{openTime},</if>
+            <if test="productstart != null ">#{productstart},</if>
             <if test="productionTime != null ">#{productionTime},</if>
             <if test="createBy != null  and createBy != ''">#{createBy},</if>
             <if test="createDate != null ">#{createDate},</if>
@@ -183,7 +186,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="ProjectInfo">
+    <update id="update" parameterType="com.highnes.attractinvestment.entity.ProjectInfo">
         update project_info
         <trim prefix="SET" suffixOverrides=",">
             <if test="title != null  and title != ''">title = #{title},</if>
@@ -200,6 +203,7 @@
             <if test="totalPeople != null ">total_people = #{totalPeople},</if>
             <if test="dealTime != null ">deal_time = #{dealTime},</if>
             <if test="openTime != null ">open_time = #{openTime},</if>
+            <if test="productstart != null ">productstart = #{productstart},</if>
             <if test="productionTime != null ">production_time = #{productionTime},</if>
             <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
             <if test="createDate != null ">create_date = #{createDate},</if>

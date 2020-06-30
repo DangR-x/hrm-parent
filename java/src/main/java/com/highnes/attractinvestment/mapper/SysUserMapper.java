@@ -1,6 +1,7 @@
 package com.highnes.attractinvestment.mapper;
 
 import com.highnes.attractinvestment.domain.SysUserRequest;
+import com.highnes.attractinvestment.entity.Permission;
 import com.highnes.attractinvestment.mapper.BaseMapper;
 import com.highnes.attractinvestment.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
@@ -38,4 +39,11 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return
      */
     List<SysUser> findUserByDeptIds(@Param("DeptIds") List<Long> DeptIds);
+
+    /**
+     * 通过用户id查询出所有权限
+     * @param userId
+     * @return
+     */
+    List<Permission> getPermissionsByUserId(String userId);
 }

@@ -2,11 +2,13 @@ package com.highnes.attractinvestment.common.utils;
 
 import com.highnes.attractinvestment.common.cache.JedisUtils;
 import com.highnes.attractinvestment.domain.SysUserResult;
+import com.highnes.attractinvestment.entity.Permission;
 import com.highnes.attractinvestment.entity.SysUser;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author Rain
@@ -23,6 +25,9 @@ public class LoginUtils {
         String token = StringUtils.uuid();
         String key = "loginUser_"+token;
         int cacheSeconds = 24*60*60;
+
+        String userName = sysUserResult.getUserName();
+        List<Permission> permissions = sysUserResult.getPermissions();
         // 设置token
         JedisUtils.setObject(key, sysUserResult, cacheSeconds);
         return token;

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highnes.attractinvestment.mapper.PermissionMapper">
+    <resultMap id="BaseResultMap" type="com.highnes.attractinvestment.entity.Permission">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="pid" jdbcType="BIGINT" property="pid" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="value" jdbcType="VARCHAR" property="value" />
+        <result column="icon" jdbcType="VARCHAR" property="icon" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="uri" jdbcType="VARCHAR" property="uri" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+    </resultMap>
+
+    <select id="selectByQuery" resultMap="BaseResultMap">
+        select * from
+        sys_permission a
+        <where>
+            sort=0
+            <if test="id != null and id != ''">and a.id = #{id}</if>
+            <if test="pid != null and pid != ''">and a.pid = #{pid}</if>
+            <if test="uri != null and uri != ''">and a.uri = #{uri}</if>
+            <if test="status != null and status != ''">and a.status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from sys_permission where status=1
+    </select>
+
+    <update id="update" parameterType="com.highnes.attractinvestment.entity.Permission">
+        update sys_permission set
+            pid=#{pid},
+            name=#{name},
+            value=#{value},
+            icon=#{icon},
+            type=#{type},
+            uri=#{uri},
+            status=#{status},
+            create_time=#{createTime},
+            sort=#{sort}
+        where id = #{id}
+    </update>
+
+    <insert id="insert" parameterType="com.highnes.attractinvestment.entity.Permission">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into sys_permission (
+        pid,
+        name,
+        value,
+        icon,
+        type,
+        uri,
+        status,
+        create_time,
+        sort
+        ) value
+        (
+        #{pid},
+        #{name},
+        #{value},
+        #{icon},
+        #{type},
+        #{uri},
+        #{status},
+        #{createTime},
+        #{sort}
+        )
+    </insert>
+
+    <delete id="deleteById" parameterType="com.highnes.attractinvestment.entity.Permission">
+        delete * from sys_permission where id = #{id}
+    </delete>
+
+
+</mapper>

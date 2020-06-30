@@ -3,9 +3,60 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.highnes.attractinvestment.mapper.SysRoleMapper">
-    
+<!--    <resultMap id="BaseResultMap" type="com.highnes.attractinvestment.entity.SysRole">-->
+<!--        <id column="role_id" jdbcType="VARCHAR" property="roleId" />-->
+<!--        <result column="role_name" jdbcType="VARCHAR" property="roleName" />-->
+<!--        <result column="role_key" jdbcType="VARCHAR" property="roleKey" />-->
+<!--        <result column="role_sort" jdbcType="INTEGER" property="roleSort" />-->
+<!--        <result column="data_scope" jdbcType="VARCHAR" property="dataScope" />-->
+<!--        <result column="status" jdbcType="VARCHAR" property="status" />-->
+<!--        <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />-->
+<!--        <result column="create_by" jdbcType="VARCHAR" property="createBy" />-->
+<!--        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />-->
+<!--        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />-->
+<!--        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />-->
+<!--        <result column="remark" jdbcType="VARCHAR" property="remark" />-->
+<!--        <collection  property="permissions" ofType="com.highnes.attractinvestment.entity.Permission">-->
+<!--            <id column="id" javaType="BIGINT" property="id"/>-->
+<!--            <result column="pid" javaType="BIGINT" property="pid"/>-->
+<!--            <result column="name" javaType="VARCHAR" property="name"/>-->
+<!--            <result column="value" javaType="VARCHAR" property="value"/>-->
+<!--            <result column="icon" javaType="VARCHAR" property="icon"/>-->
+<!--            <result column="type" javaType="INTEGER" property="type"/>-->
+<!--            <result column="uri" javaType="VARCHAR" property="uri"/>-->
+<!--            <result column="status" javaType="INTEGER" property="status"/>-->
+<!--            <result column="create_time" javaType="TIMESTAMP" property="createTime"/>-->
+<!--            <result column="sort" javaType="INTEGER" property="sort"/>-->
+<!--        </collection >-->
+<!--    </resultMap>-->
+    <sql id="sysRolepermission">
+        sr.role_id AS "roleId",
+        sr.role_name AS "roleName",
+        sr.role_key AS "roleKey",
+        sr.role_sort AS "roleSort",
+        sr.data_scope AS "dataScope",
+        sr.status AS "status",
+        sr.del_flag AS "delFlag",
+        sr.create_by AS "createBy",
+        sr.create_date AS "createDate",
+        sr.update_by AS "updateBy",
+        sr.update_Date AS "updateDate",
+        sr.remark AS "remark",
+        sp.id AS "id",
+        sp.pid AS "pid",
+        sp.name AS "name",
+        sp.value AS "value",
+        sp.icon AS "icon",
+        sp.type AS "type",
+        sp.uri AS "uri",
+        sp.status AS "status",
+        sp.create_time AS "createTime",
+        sp.sort AS "sort"
+    </sql>
+
+
     <sql id="sysRoleColumns">
-    a.role_id AS "roleId",
+        a.role_id AS "roleId",
         a.role_name AS "roleName",
         a.role_key AS "roleKey",
         a.role_sort AS "roleSort",
@@ -16,10 +67,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         a.create_date AS "createDate",
         a.update_by AS "updateBy",
         a.update_Date AS "updateDate",
-        a.remark AS "remark"        </sql>
+        a.remark AS "remark"
+    </sql>
 
     <sql id="sysRoleLeftJoin">
     </sql>
+
+    <select id="findRolePermissionByUserId" resultType="com.highnes.attractinvestment.entity.SysRole">
+        select
+        <include refid="sysRolepermission"/>
+        from sys_user_role sur
+        left join sys_role sr on sur.role_id = sr.role_id
+        left join sys_role_permission_relation srp on srp.role_id = sr.role_id
+        left join sys_permission sp on srp.permission_id = sp.id
+        where sur.user_id = #{userId}
+    </select>
+
+    <select id="getRoleByUserId" resultType="com.highnes.attractinvestment.entity.SysRole">
+        select * from
+        sys_user_role sur
+        left join sys_role sr on sr.role_id = sur.role_id
+        where sur.user_id = #{userId}
+    </select>
 
     <select id="get" resultType="SysRole">
         SELECT
@@ -94,6 +163,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="delete" parameterType="Long">
         update sys_role set del_flag = #{DEL_FLAG_DELETE} where role_id = #{roleId}
     </delete>
+
+
     
     <select id="selRoleInfoList" resultType="com.highnes.attractinvestment.domain.SysRoleRequest">
         select count(s1.role_id) as roleNum,s2.role_name as roleName ,s4.dept_name as deptName,s2.create_date as createDate,s2.`status`  from sys_user_role s1
